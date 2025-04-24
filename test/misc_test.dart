@@ -6,10 +6,14 @@ import 'package:text_serializer/text_serializer.dart';
 
 void main() {
   group('Misc', () {
-    test('splitCommandLine', () {
+    test('splitCommandLine()', () {
       var result = splitCommandLine(r'''ls -l''');
       echo(toJson(result));
       expect(toJson(result) == r'''["ls","-l"]''', isTrue);
     });
+    test('timeBasedVersionString()', () {
+      echo(timeBasedVersionString());
+    });
+    //timeBasedVersionString
   });
 }
