@@ -2,7 +2,7 @@ name: std
 description: |-
   [std]
   A dependncy less dart package (CommandRunner etc).
-version: 2025.424.1834
+version: 2025.424.1835
 homepage:
 repository: "https://github.com/dart-pkg/std"
 environment:

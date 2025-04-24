@@ -39,4 +39,4 @@ find . -name "*.exe" -exec rm -f {} \;
 rm -f *.txt
 find . -name "*.txt" -exec rm -f {} \;
 
-#dart pub publish --force
+dart pub publish --force
