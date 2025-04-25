@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_single_quotes
+import 'dart:typed_data';
+
 import 'package:test/test.dart';
 import 'package:std/misc.dart';
 import 'package:output/output.dart';
@@ -14,6 +16,27 @@ void main() {
     test('timeBasedVersionString()', () {
       echo(timeBasedVersionString());
     });
-    //timeBasedVersionString
+    test('isBinary()', () {
+      final Uint8List listA = Uint8List.fromList([1, 2, 3]);
+      expect(isBinary(listA), isFalse);
+      final Uint8List listB = Uint8List.fromList([1, 0, 3]);
+      expect(isBinary(listB), isTrue);
+      final List<int> listC = <int>[];
+      for (int i = 0; i < 8000; i++) {
+        listC.add(1);
+      }
+      listC.add(0);
+      expect(isBinary(Uint8List.fromList(listC)), isFalse);
+      final List<int> listD = <int>[];
+      for (int i = 0; i < 7999; i++) {
+        listD.add(1);
+      }
+      listD.add(0);
+      expect(isBinary(Uint8List.fromList(listD)), isTrue);
+      expect(isBinaryFile('test/favicon.png'), isTrue);
+      expect(isBinaryFile('test/misc_test.dart'), isFalse);
+      expect(isTextFile('test/favicon.png'), isFalse);
+      expect(isTextFile('test/misc_test.dart'), isTrue);
+    });
   });
 }
