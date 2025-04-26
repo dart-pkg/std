@@ -109,13 +109,13 @@ class CommandRunner {
             '$display, exitCode $code, workingDirectory: $workingDirectory',
           );
         }
-        // if (buffer.endsWith('\r\n')) {
-        //   buffer = buffer.substring(0, buffer.length - 2);
-        // } else if (buffer.endsWith('\n')) {
-        //   buffer = buffer.substring(0, buffer.length - 1);
-        // } else if (buffer.endsWith('\r')) {
-        //   buffer = buffer.substring(0, buffer.length - 1);
-        // }
+        if (buffer.endsWith('\r\n')) {
+          buffer = buffer.substring(0, buffer.length - 2);
+        } else if (buffer.endsWith('\n')) {
+          buffer = buffer.substring(0, buffer.length - 1);
+        } else if (buffer.endsWith('\r')) {
+          buffer = buffer.substring(0, buffer.length - 1);
+        }
         // buffer = buffer.replaceAll('\r\n', '\n');
         // buffer = buffer.replaceAll('\r', '\n');
         buffer = misc__.adjustTextNewlines(buffer);

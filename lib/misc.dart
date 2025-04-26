@@ -76,13 +76,6 @@ String timeBasedVersionString() {
 
 /// Replace non-unix new lines in a string to unix newlines
 String adjustTextNewlines(String s) {
-  if (s.endsWith('\r\n')) {
-    s = s.substring(0, s.length - 2);
-  } else if (s.endsWith('\n')) {
-    s = s.substring(0, s.length - 1);
-  } else if (s.endsWith('\r')) {
-    s = s.substring(0, s.length - 1);
-  }
   s = s.replaceAll('\r\n', '\n');
   s = s.replaceAll('\r', '\n');
   return s;
