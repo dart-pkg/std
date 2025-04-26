@@ -31,3 +31,14 @@
 ## 2025.426.2245
 
 - Changed signature of CommandRunner.run$()
+
+## 2025.426.2248
+
+- Added: lib/std.dart
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.426.2245
++version: 2025.426.2248
+```
