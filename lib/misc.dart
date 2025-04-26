@@ -126,3 +126,56 @@ List<String> textToLines(String s) {
   final lines = splitter.convert(s);
   return lines;
 }
+
+/// Returns true if dart was run with `--enable-asserts' flag else false
+bool get isInDebugMode {
+  bool inDebugMode = false;
+  assert(inDebugMode = true);
+  return inDebugMode;
+}
+
+/// Returns environment variable with name or null if not exists
+String? getenv(String name) {
+  return io__.Platform.environment[name];
+}
+
+/// Reads file content as bytes
+Uint8List readFileBytes(String path) {
+  final $file = io__.File(path);
+  return $file.readAsBytesSync();
+}
+
+/// Reads file content as string
+String readFileString(String path) {
+  final $file = io__.File(path);
+  return $file.readAsStringSync();
+}
+
+/// Reads file content as lines
+List<String> readFileLines(String path) {
+  final $file = io__.File(path);
+  return $file.readAsLinesSync();
+}
+
+/// Writes bytes data to file
+void writeFileBytes(String path, Uint8List data) {
+  io__.File(path)
+    ..createSync(recursive: true)
+    ..writeAsBytesSync(data.toList());
+}
+
+/// Writes string data to file
+void writeFileString(String path, String data) {
+  data = adjustTextNewlines(data);
+  writeFileBytes(path, convert__.utf8.encode(data));
+}
+
+/// Returns true if file exists or false if not
+bool fileExists(String path) {
+  return io__.File(path).existsSync();
+}
+
+/// Returns true if directory exists or false if not
+bool directoryExists(String path) {
+  return io__.Directory(path).existsSync();
+}
