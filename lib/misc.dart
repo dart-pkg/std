@@ -39,26 +39,26 @@ String lastChars(String s, int len) {
   return s.substring(s.length - len);
 }
 
-String _adjustVersionString(String $s) {
-  List<String> $split = $s.split('.');
-  List<String> $result = <String>[];
-  for (int i = 0; i < $split.length; i++) {
-    String $part = $split[i];
-    String $part2 = '';
-    bool isBeggining = true;
-    for (int j = 0; j < $part.length; j++) {
-      if (!isBeggining || (j == $part.length - 1)) {
-        $part2 += $part[j];
+String _adjustVersionString(String s) {
+  List<String> split = s.split('.');
+  List<String> result = <String>[];
+  for (int i = 0; i < split.length; i++) {
+    String part = split[i];
+    String part2 = '';
+    bool isBeginning = true;
+    for (int j = 0; j < part.length; j++) {
+      if (!isBeginning || (j == part.length - 1)) {
+        part2 += part[j];
       } else {
-        if ($part[j] != '0') {
-          $part2 += $part[j];
-          isBeggining = false;
+        if (part[j] != '0') {
+          part2 += part[j];
+          isBeginning = false;
         }
       }
     }
-    $result.add($part2);
+    result.add(part2);
   }
-  return $result.join('.');
+  return result.join('.');
 }
 
 /// Returns local time based version string
@@ -134,20 +134,20 @@ String? getenv(String name) {
 
 /// Reads file content as bytes
 Uint8List readFileBytes(String path) {
-  final $file = io__.File(path);
-  return $file.readAsBytesSync();
+  final file = io__.File(path);
+  return file.readAsBytesSync();
 }
 
 /// Reads file content as string
 String readFileString(String path) {
-  final $file = io__.File(path);
-  return $file.readAsStringSync();
+  final file = io__.File(path);
+  return file.readAsStringSync();
 }
 
 /// Reads file content as lines
 List<String> readFileLines(String path) {
-  final $file = io__.File(path);
-  return $file.readAsLinesSync();
+  final file = io__.File(path);
+  return file.readAsLinesSync();
 }
 
 /// Writes bytes data to file
