@@ -1,12 +1,3 @@
-# std
-[![Pub](https://img.shields.io/pub/v/std.svg)](https://pub.dartlang.org/packages/std)
-
-CommandRunner is a wrapper over `dart:io` [Process] API's that supports features like environment management, user switches, and more.
-
-Useful for writing shell utility scripts in Dart, or within applications that perform system administration
-tasks on behalf of other users.
-
-```dart
 import 'dart:io';
 import 'package:std/command_runner.dart';
 
@@ -58,4 +49,3 @@ main() async {
   ], autoQuote: false);
   print(find3);
 }
-```

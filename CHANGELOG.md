@@ -42,3 +42,26 @@
 -version: 2025.426.2245
 +version: 2025.426.2248
 ```
+
+## 2025.427.52
+
+- Added: example/example.dart
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.426.2248
++version: 2025.427.52
++platforms:
++  android:
++  ios:
++  linux:
++  macos:
++  #web:
++  windows:
++topics:
++  - cli
++  - process
+-#executables:
+-#  std: main
+```
