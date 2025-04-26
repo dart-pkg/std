@@ -23,3 +23,7 @@
 ## 2025.426.1633
 
 - Fixed bug in adjustTextNewlines()
+
+## 2025.426.1637
+
+- Modified within CommandRunner.run$(): buffer = buffer.trimRight()
