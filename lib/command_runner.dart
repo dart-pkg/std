@@ -26,8 +26,7 @@ class CommandRunner {
   }) async {
     List<String> split = misc__.splitCommandLine(command);
     return run$(
-      split[0],
-      arguments: split.sublist(1),
+      split,
       workingDirectory: workingDirectory,
       environment: environment,
       silent: silent,
@@ -56,8 +55,7 @@ class CommandRunner {
 
   /// Execute command and returns stdout
   Future<dynamic> run$(
-    String executable, {
-    List<String> arguments = const [],
+    List<String> command, {
     String? workingDirectory,
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
@@ -65,6 +63,8 @@ class CommandRunner {
     bool returnCode = false,
     bool autoQuote = true,
   }) async {
+    String executable = command[0];
+    List<String> arguments = command.sublist(1).toList();
     workingDirectory ??= io__.Directory.current.absolute.path;
     if (autoQuote) {
       executable = _quote(executable);

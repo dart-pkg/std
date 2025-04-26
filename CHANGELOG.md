@@ -27,3 +27,7 @@
 ## 2025.426.1637
 
 - Modified within CommandRunner.run$(): buffer = buffer.trimRight()
+
+## 2025.426.2245
+
+- Changed signature of CommandRunner.run$()

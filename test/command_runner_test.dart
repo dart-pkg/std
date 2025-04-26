@@ -8,7 +8,7 @@ main() async {
     test('run1', () async {
       echo('run1');
       var runner = CommandRunner();
-      String ls = await runner.run('ls', silent: true);
+      String ls = await runner.run$(['ls', '-l'], silent: true);
       echo(ls, 'ls');
     });
   });
