@@ -1,3 +1,4 @@
+import 'dart:convert' as convert__;
 import 'dart:io' as io__;
 import 'dart:typed_data';
 
@@ -117,4 +118,11 @@ bool isTextFile(String file) {
   final f = io__.File(file);
   Uint8List bytes = f.readAsBytesSync();
   return !isBinary(bytes);
+}
+
+/// Splits string with newlines to list of lines
+List<String> textToLines(String s) {
+  const splitter = convert__.LineSplitter();
+  final lines = splitter.convert(s);
+  return lines;
 }
