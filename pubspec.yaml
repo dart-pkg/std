@@ -3,17 +3,17 @@ description: |-
   [std]
   A dependncy less dart package (CommandRunner etc).
 version: 2025.427.52
-homepage:
-repository: "https://github.com/dart-pkg/std"
+homepage: 
+repository: https://github.com/dart-pkg/std
 environment:
   sdk: ^3.7.2
 platforms:
-  android:
-  ios:
-  linux:
-  macos:
-  #web:
-  windows:
+  android: 
+  ios: 
+  linux: 
+  macos: 
+  # web:
+  windows: 
 topics:
   - cli
   - process
