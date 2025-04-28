@@ -19,6 +19,6 @@ topics:
   - process
 dev_dependencies:
   lints: ^5.1.1
-  output: ^2025.426.2027
+  output: ^2025.428.931
   test: ^1.25.15
   text_serializer: ^2025.428.923
