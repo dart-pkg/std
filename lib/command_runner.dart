@@ -7,12 +7,12 @@ import 'package:std/misc.dart' as misc__;
 class CommandRunner {
   bool useUnixShell;
   String unixShell;
-  convert__.Encoding encoding;
+  convert__.Encoding? encoding;
 
   CommandRunner({
     this.useUnixShell = false,
     this.unixShell = 'bash',
-    this.encoding = convert__.utf8,
+    this.encoding /* = null */, //convert__.utf8,
   });
 
   /// Execute command and returns stdout
@@ -90,15 +90,19 @@ class CommandRunner {
       includeParentEnvironment: includeParentEnvironment,
       runInShell: !useUnixShell,
     ).then((process) {
-      process.stdout.transform(encoding.decoder).listen((data) {
-        if (!silent) {
-          io__.stdout.write(data);
-        }
-        buffer += data;
-      });
-      process.stderr.transform(encoding.decoder).listen((data) {
-        io__.stderr.write(data);
-      });
+      process.stdout
+          .transform((encoding ?? io__.SystemEncoding()).decoder)
+          .listen((data) {
+            if (!silent) {
+              io__.stdout.write(data);
+            }
+            buffer += data;
+          });
+      process.stderr
+          .transform((encoding ?? io__.SystemEncoding()).decoder)
+          .listen((data) {
+            io__.stderr.write(data);
+          });
       process.exitCode.then((code) {
         if (returnCode) {
           completer.complete(code);

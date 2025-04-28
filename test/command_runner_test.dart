@@ -10,6 +10,7 @@ main() async {
       var runner = CommandRunner();
       String ls = await runner.run$(['ls', '-l'], silent: true);
       echo(ls, 'ls');
+      await runner.run('ping -n 2 www.youtube.com');
     });
   });
 }

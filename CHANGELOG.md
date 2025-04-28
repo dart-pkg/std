@@ -65,3 +65,14 @@
 -#executables:
 -#  std: main
 ```
+
+## 2025.428.1703
+
+- Changed CommandRunner's default encoding from utf8 to SystemEncoding()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.427.52
++version: 2025.428.1703
+```
