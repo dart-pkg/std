@@ -31,5 +31,7 @@ migrate_working_dir/
 build/
 
 # By JavaCommons Technologiies
-*.g.dart
 *.txt
+!/bin
+!/lib
+!/test
