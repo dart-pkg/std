@@ -159,34 +159,41 @@ String pathExpand(String path) {
   return path.replaceAll(r'\', '/');
 }
 
+/// Sets current directory
 void setCwd(String path) {
   path = pathExpand(path);
   dart_io.Directory.current = pathFullName(path);
 }
 
+/// Gets current directory
 String getCwd() {
   return pathFullName(dart_io.Directory.current.absolute.path);
 }
 
-String pathFullName(String $path) {
-  return path_path.normalize(path_path.absolute($path)).replaceAll(r'\', '/');
+/// Returns full path of a path
+String pathFullName(String path) {
+  return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
 }
 
+/// Returns directory part of a path
 String pathDirectoryName(String path) {
   path = pathExpand(path);
   return pathFullName(path_path.dirname(path));
 }
 
+/// Returns file name part of a path
 String pathFileName(String path) {
   path = pathExpand(path);
   return path_path.basename(path);
 }
 
+/// Returns directory part (without extension) of a path
 String pathBaseName(String path) {
   path = pathExpand(path);
   return path_path.basenameWithoutExtension(path);
 }
 
+/// Returns extension of a path
 String pathExtension(String path) {
   path = pathExpand(path);
   return path_path.extension(path);
@@ -206,6 +213,7 @@ List<String> _getFilesFromDirRecursive(String path) {
   return result;
 }
 
+/// Returns all files under a path
 List<String> pathFiles(String path, [bool? recursive]) {
   path = pathExpand(path);
   try {
@@ -228,6 +236,7 @@ List<String> pathFiles(String path, [bool? recursive]) {
   }
 }
 
+/// Returns all directories under a path
 List<String> pathDirectories(String path) {
   path = pathExpand(path);
   try {
