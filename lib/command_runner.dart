@@ -1,13 +1,13 @@
-import 'dart:io' as io__;
-import 'dart:async' as async__;
-import 'dart:convert' as convert__;
-import 'package:std/misc.dart' as misc__;
+import 'dart:io' as dart_io;
+import 'dart:async' as dart_async;
+import 'dart:convert' as dart_convert;
+import 'package:std/misc.dart' as std_misc;
 
 /// Process manager for executing command lines
 class CommandRunner {
   bool useUnixShell;
   String unixShell;
-  convert__.Encoding? encoding;
+  dart_convert.Encoding? encoding;
 
   CommandRunner({
     this.useUnixShell = false,
@@ -24,7 +24,7 @@ class CommandRunner {
     bool silent = false,
     bool returnCode = false,
   }) async {
-    List<String> split = misc__.splitCommandLine(command);
+    List<String> split = std_misc.splitCommandLine(command);
     return run$(
       split,
       workingDirectory: workingDirectory,
@@ -65,14 +65,14 @@ class CommandRunner {
   }) async {
     String executable = command[0];
     List<String> arguments = command.sublist(1).toList();
-    workingDirectory ??= io__.Directory.current.absolute.path;
+    workingDirectory ??= dart_io.Directory.current.absolute.path;
     if (autoQuote) {
       executable = _quote(executable);
       arguments = arguments.map((x) => _quote(x)).toList();
     }
-    String display = misc__.joinCommandLine([executable, ...arguments]);
+    String display = std_misc.joinCommandLine([executable, ...arguments]);
     if (useUnixShell) {
-      String command = misc__.joinCommandLine([executable, ...arguments]);
+      String command = std_misc.joinCommandLine([executable, ...arguments]);
       executable = unixShell;
       arguments = ['-c', command];
     } else {
@@ -80,9 +80,9 @@ class CommandRunner {
       arguments = arguments.map((x) => _unquote(x)).toList();
     }
     print('[$workingDirectory] \$ $display');
-    var completer = async__.Completer<dynamic>();
+    var completer = dart_async.Completer<dynamic>();
     String buffer = '';
-    io__.Process.start(
+    dart_io.Process.start(
       executable,
       arguments,
       workingDirectory: workingDirectory,
@@ -91,17 +91,17 @@ class CommandRunner {
       runInShell: !useUnixShell,
     ).then((process) {
       process.stdout
-          .transform((encoding ?? io__.SystemEncoding()).decoder)
+          .transform((encoding ?? dart_io.SystemEncoding()).decoder)
           .listen((data) {
             if (!silent) {
-              io__.stdout.write(data);
+              dart_io.stdout.write(data);
             }
             buffer += data;
           });
       process.stderr
-          .transform((encoding ?? io__.SystemEncoding()).decoder)
+          .transform((encoding ?? dart_io.SystemEncoding()).decoder)
           .listen((data) {
-            io__.stderr.write(data);
+            dart_io.stderr.write(data);
           });
       process.exitCode.then((code) {
         if (returnCode) {
@@ -121,7 +121,7 @@ class CommandRunner {
         //   buffer = buffer.substring(0, buffer.length - 1);
         // }
         buffer = buffer.trimRight();
-        buffer = misc__.adjustTextNewlines(buffer);
+        buffer = std_misc.adjustTextNewlines(buffer);
         completer.complete(buffer);
       });
     });

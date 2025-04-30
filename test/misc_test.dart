@@ -38,5 +38,16 @@ void main() {
       expect(isTextFile('test/favicon.png'), isFalse);
       expect(isTextFile('test/misc_test.dart'), isTrue);
     });
+    test('pathExpand()', () {
+      String result = pathExpand(r'$HOME/cmd/$XYZ');
+      echo(result, r'result');
+      expect(result == r'''D:/home11/cmd/$XYZ''', isTrue);
+      result = pathExpand(r'${HOME}/cmd/${XYZ}');
+      echo(result, r'result');
+      expect(result == r'''D:/home11/cmd/${XYZ}''', isTrue);
+      result = pathExpand(r'~/cmd/${XYZ}');
+      echo(result, r'result');
+      expect(result == r'''D:/home11/cmd/${XYZ}''', isTrue);
+    });
   });
 }

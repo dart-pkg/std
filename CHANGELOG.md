@@ -76,3 +76,14 @@
 -version: 2025.427.52
 +version: 2025.428.1703
 ```
+
+## 2025.430.1833
+
+- Added: pathExpand()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.428.1703
++version: 2025.430.1833
+```
