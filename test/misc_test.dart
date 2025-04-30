@@ -52,5 +52,10 @@ void main() {
       echo(result, r'result');
       expect(result == r'''C:/Users/user/CLANG64/${XYZ}''', isTrue);
     });
+    test('readFileString()', () {
+      String result = readFileString(r'$HOME/.bashrc');
+      echoJson(result);
+      expect(result.contains('\r\n'), isFalse);
+    });
   });
 }

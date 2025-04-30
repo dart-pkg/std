@@ -265,7 +265,7 @@ Uint8List readFileBytes(String path) {
 String readFileString(String path) {
   path = pathExpand(path);
   final file = dart_io.File(path);
-  return file.readAsStringSync();
+  return adjustTextNewlines(file.readAsStringSync());
 }
 
 /// Reads file content as lines

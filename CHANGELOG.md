@@ -122,3 +122,14 @@
 -version: 2025.430.2132
 +version: 2025.430.2138
 ```
+
+## 2025.501.843
+
+- Modified readFileString()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.430.2138
++version: 2025.501.843
+```
