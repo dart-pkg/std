@@ -1,6 +1,7 @@
 import 'dart:convert' as dart_convert;
 import 'dart:io' as dart_io;
 import 'dart:typed_data';
+import 'package:path/path.dart' as path_path;
 
 /// Makes a command line string from List of String (arg list).
 String joinCommandLine(List<String> command) {
@@ -132,47 +133,6 @@ String? getenv(String name) {
   return dart_io.Platform.environment[name];
 }
 
-/// Reads file content as bytes
-Uint8List readFileBytes(String path) {
-  final file = dart_io.File(path);
-  return file.readAsBytesSync();
-}
-
-/// Reads file content as string
-String readFileString(String path) {
-  final file = dart_io.File(path);
-  return file.readAsStringSync();
-}
-
-/// Reads file content as lines
-List<String> readFileLines(String path) {
-  final file = dart_io.File(path);
-  return file.readAsLinesSync();
-}
-
-/// Writes bytes data to file
-void writeFileBytes(String path, Uint8List data) {
-  dart_io.File(path)
-    ..createSync(recursive: true)
-    ..writeAsBytesSync(data.toList());
-}
-
-/// Writes string data to file
-void writeFileString(String path, String data) {
-  data = adjustTextNewlines(data);
-  writeFileBytes(path, dart_convert.utf8.encode(data));
-}
-
-/// Returns true if file exists or false if not
-bool fileExists(String path) {
-  return dart_io.File(path).existsSync();
-}
-
-/// Returns true if directory exists or false if not
-bool directoryExists(String path) {
-  return dart_io.Directory(path).existsSync();
-}
-
 /// Expands path with environment variables
 String pathExpand(String path) {
   if (path.startsWith('~/')) {
@@ -197,4 +157,138 @@ String pathExpand(String path) {
     return varValue ?? match.group(0)!;
   });
   return path.replaceAll(r'\', '/');
+}
+
+void setCwd(String path) {
+  path = pathExpand(path);
+  dart_io.Directory.current = pathFullName(path);
+}
+
+String getCwd() {
+  return pathFullName(dart_io.Directory.current.absolute.path);
+}
+
+String pathFullName(String $path) {
+  return path_path.normalize(path_path.absolute($path)).replaceAll(r'\', '/');
+}
+
+String pathDirectoryName(String path) {
+  path = pathExpand(path);
+  return pathFullName(path_path.dirname(path));
+}
+
+String pathFileName(String path) {
+  path = pathExpand(path);
+  return path_path.basename(path);
+}
+
+String pathBaseName(String path) {
+  path = pathExpand(path);
+  return path_path.basenameWithoutExtension(path);
+}
+
+String pathExtension(String path) {
+  path = pathExpand(path);
+  return path_path.extension(path);
+}
+
+List<String> _getFilesFromDirRecursive(String path) {
+  List<String> result = [];
+  dart_io.Directory dir = dart_io.Directory(path);
+  List<dart_io.FileSystemEntity> entities = dir.listSync().toList();
+  for (var entity in entities) {
+    if (entity is dart_io.File) {
+      result.add(pathFullName(entity.path));
+    } else if (entity is dart_io.Directory) {
+      result.addAll(_getFilesFromDirRecursive(pathFullName(entity.path)));
+    }
+  }
+  return result;
+}
+
+List<String> pathFiles(String path, [bool? recursive]) {
+  path = pathExpand(path);
+  try {
+    recursive ??= false;
+    if (recursive) {
+      return _getFilesFromDirRecursive(
+        path,
+      ).map(($x) => $x.replaceAll(r'\', r'/')).toList();
+    }
+    final $dir = dart_io.Directory(path_path.join(path));
+    final List<dart_io.FileSystemEntity> $entities = $dir.listSync().toList();
+    final Iterable<dart_io.File> $files = $entities.whereType<dart_io.File>();
+    List<String> result = [];
+    $files.toList().forEach((x) {
+      result.add(pathFullName(x.path));
+    });
+    return result.map(($x) => $x.replaceAll(r'\', r'/')).toList();
+  } catch ($e) {
+    return <String>[];
+  }
+}
+
+List<String> pathDirectories(String path) {
+  path = pathExpand(path);
+  try {
+    final $dir = dart_io.Directory(path_path.join(path));
+    final List<dart_io.FileSystemEntity> $entities = $dir.listSync().toList();
+    final Iterable<dart_io.Directory> $dirs =
+        $entities.whereType<dart_io.Directory>();
+    List<String> result = [];
+    $dirs.toList().forEach((x) {
+      result.add(pathFullName(x.path));
+    });
+    return result.map(($x) => $x.replaceAll(r'\', r'/')).toList();
+  } catch ($e) {
+    return <String>[];
+  }
+}
+
+/// Reads file content as bytes
+Uint8List readFileBytes(String path) {
+  path = pathExpand(path);
+  final file = dart_io.File(path);
+  return file.readAsBytesSync();
+}
+
+/// Reads file content as string
+String readFileString(String path) {
+  path = pathExpand(path);
+  final file = dart_io.File(path);
+  return file.readAsStringSync();
+}
+
+/// Reads file content as lines
+List<String> readFileLines(String path) {
+  path = pathExpand(path);
+  final file = dart_io.File(path);
+  return file.readAsLinesSync();
+}
+
+/// Writes bytes data to file
+void writeFileBytes(String path, Uint8List data) {
+  path = pathExpand(path);
+  dart_io.File(path)
+    ..createSync(recursive: true)
+    ..writeAsBytesSync(data.toList());
+}
+
+/// Writes string data to file
+void writeFileString(String path, String data) {
+  path = pathExpand(path);
+  data = adjustTextNewlines(data);
+  writeFileBytes(path, dart_convert.utf8.encode(data));
+}
+
+/// Returns true if file exists or false if not
+bool fileExists(String path) {
+  path = pathExpand(path);
+  return dart_io.File(path).existsSync();
+}
+
+/// Returns true if directory exists or false if not
+bool directoryExists(String path) {
+  path = pathExpand(path);
+  return dart_io.Directory(path).existsSync();
 }

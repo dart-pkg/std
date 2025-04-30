@@ -98,3 +98,16 @@
 -version: 2025.430.1833
 +version: 2025.430.2012
 ```
+
+## 2025.430.2132
+
+- Ported functions depending on path package from sys package
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.430.2012
++version: 2025.430.2132
++dependencies:
++  path: ^1.9.1
+```
