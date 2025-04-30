@@ -191,5 +191,10 @@ String pathExpand(String path) {
     String? varValue = getenv(varName);
     return varValue ?? match.group(0)!;
   });
+  path = path.replaceAllMapped(RegExp(r'%([_0-9a-zA-Z]+)%'), (match) {
+    String varName = match.group(1)!;
+    String? varValue = getenv(varName);
+    return varValue ?? match.group(0)!;
+  });
   return path.replaceAll(r'\', '/');
 }

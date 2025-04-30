@@ -48,6 +48,9 @@ void main() {
       result = pathExpand(r'~/cmd/${XYZ}');
       echo(result, r'result');
       expect(result == r'''D:/home11/cmd/${XYZ}''', isTrue);
+      result = pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}');
+      echo(result, r'result');
+      expect(result == r'''C:/Users/user/CLANG64/${XYZ}''', isTrue);
     });
   });
 }
