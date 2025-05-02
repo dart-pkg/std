@@ -256,6 +256,17 @@ List<String> pathDirectories(String path) {
   }
 }
 
+/// Renames a file or a directory
+void pathRename(String oldPath, String newPath) {
+  if (directoryExists(oldPath)) {
+    dart_io.Directory(oldPath).renameSync(newPath);
+  } else if (fileExists(oldPath)) {
+    dart_io.File(oldPath).renameSync(newPath);
+  } else {
+    throw Exception('$oldPath does not exist');
+  }
+}
+
 /// Returns system temporary directory path
 String get pathOfTempDir {
   return pathFullName(dart_io.Directory.systemTemp.path);
@@ -382,7 +393,8 @@ String installBinaryToTempDir(
     String uuid = uuidTimeBased();
     writeFileBytes('$path.$uuid', bytes);
     try {
-      dart_io.File('$path.$uuid').renameSync(path);
+      //dart_io.File('$path.$uuid').renameSync(path);
+      pathRename('$path.$uuid', path);
     } catch (_) {}
   }
   Uint8List bytes2 = readFileBytes(path);

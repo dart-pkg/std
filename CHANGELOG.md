@@ -161,3 +161,14 @@
 +  crypto: ^3.0.6
 +  uuid: ^4.5.1
 ```
+
+## 2025.502.2312
+
+- Added: pathRename(String oldPath, String newPath)
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.502.2210
++version: 2025.502.2312
+```

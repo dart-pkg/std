@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_single_quotes
 import 'dart:typed_data';
-
+import 'dart:convert' as dart_convert;
 import 'package:test/test.dart';
 import 'package:std/misc.dart';
 import 'package:output/output.dart';
@@ -59,6 +59,10 @@ void main() {
     });
     test('pathOfTempDir', () {
       echo(pathOfTempDir, 'pathOfTempDir');
+    });
+    test('installBinaryToTempDir()', () {
+      Uint8List bytes = dart_convert.utf8.encode('abcハロー©');
+      echo(installBinaryToTempDir(bytes, prefix: 'test-', suffix: '.txt'));
     });
   });
 }
