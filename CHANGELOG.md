@@ -133,3 +133,18 @@
 -version: 2025.430.2138
 +version: 2025.501.843
 ```
+
+## 2025.502.2031
+
+- Added pathOfTempDir
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.501.843
++version: 2025.502.2031
+-  output: ^2025.430.1731
++  output: ^2025.502.1958
+-  text_serializer: ^2025.430.1719
++  text_serializer: ^2025.502.1757
+```

@@ -254,6 +254,11 @@ List<String> pathDirectories(String path) {
   }
 }
 
+/// Returns system temporary directory path
+String get pathOfTempDir {
+  return pathFullName(dart_io.Directory.systemTemp.path);
+}
+
 /// Reads file content as bytes
 Uint8List readFileBytes(String path) {
   path = pathExpand(path);

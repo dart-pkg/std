@@ -57,5 +57,8 @@ void main() {
       echoJson(result);
       expect(result.contains('\r\n'), isFalse);
     });
+    test('pathOfTempDir', () {
+      echo(pathOfTempDir, 'pathOfTempDir');
+    });
   });
 }
