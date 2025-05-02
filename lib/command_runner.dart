@@ -18,6 +18,7 @@ class CommandRunner {
   /// Execute command and returns stdout
   Future<dynamic> run(
     String command, {
+    dart_convert.Encoding? encoding,
     String? workingDirectory,
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
@@ -27,6 +28,7 @@ class CommandRunner {
     List<String> split = std_misc.splitCommandLine(command);
     return run$(
       split,
+      encoding: encoding,
       workingDirectory: workingDirectory,
       environment: environment,
       silent: silent,
@@ -56,6 +58,7 @@ class CommandRunner {
   /// Execute command and returns stdout
   Future<dynamic> run$(
     List<String> command, {
+    dart_convert.Encoding? encoding,
     String? workingDirectory,
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
@@ -65,6 +68,7 @@ class CommandRunner {
   }) async {
     String executable = command[0];
     List<String> arguments = command.sublist(1).toList();
+    encoding ??= this.encoding;
     workingDirectory ??= dart_io.Directory.current.absolute.path;
     if (autoQuote) {
       executable = _quote(executable);

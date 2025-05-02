@@ -1,4 +1,7 @@
 // ignore_for_file: prefer_single_quotes
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:output/output.dart';
 import 'package:std/command_runner.dart';
@@ -11,6 +14,14 @@ main() async {
       String ls = await runner.run$(['ls', '-l'], silent: true);
       echo(ls, 'ls');
       await runner.run('ping -n 2 www.youtube.com');
+      runner = CommandRunner(encoding: SystemEncoding());
+      await runner.run('ping -n 2 www.youtube.com');
+      runner = CommandRunner(encoding: utf8);
+      //await runner.run('ping -n 2 www.youtube.com'); // error
+      await runner.run(
+        'ping -n 2 www.youtube.com',
+        encoding: SystemEncoding(),
+      ); // ok
     });
   });
 }

@@ -172,3 +172,14 @@
 -version: 2025.502.2210
 +version: 2025.502.2312
 ```
+
+## 2025.502.2329
+
+- Modified CommandRunner class
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.502.2312
++version: 2025.502.2329
+```
