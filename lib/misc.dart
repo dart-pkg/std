@@ -2,6 +2,8 @@ import 'dart:convert' as dart_convert;
 import 'dart:io' as dart_io;
 import 'dart:typed_data';
 import 'package:path/path.dart' as path_path;
+import 'package:crypto/crypto.dart' as crypto_crypto;
+import 'package:uuid/uuid.dart' as uuid_uuid;
 
 /// Makes a command line string from List of String (arg list).
 String joinCommandLine(List<String> command) {
@@ -305,4 +307,92 @@ bool fileExists(String path) {
 bool directoryExists(String path) {
   path = pathExpand(path);
   return dart_io.Directory(path).existsSync();
+}
+
+/// Generates a time-based version 1 UUID
+String uuidTimeBased() {
+  var uuid = uuid_uuid.Uuid();
+  return uuid.v1();
+}
+
+/// Generates a RNG version 4 UUID (a random UUID)
+String uuidRandom() {
+  var uuid = uuid_uuid.Uuid();
+  return uuid.v4();
+}
+
+/// Generate a v5 (namespace-name-sha1-based) id
+String uuidForNamespace(String ns) {
+  var uuid = uuid_uuid.Uuid();
+  return uuid.v5(uuid_uuid.Namespace.url.value, ns);
+}
+
+/// Returns MD5 hash
+String md5(Uint8List bytes) {
+  var digest = crypto_crypto.md5.convert(bytes);
+  return digest.toString();
+}
+
+/// Returns SHA-1 hash
+String sha1(Uint8List bytes) {
+  var digest = crypto_crypto.sha1.convert(bytes);
+  return digest.toString();
+}
+
+/// Returns SHA-224 hash
+String sha224(Uint8List bytes) {
+  var digest = crypto_crypto.sha224.convert(bytes);
+  return digest.toString();
+}
+
+/// Returns SHA-256 hash
+String sha256(Uint8List bytes) {
+  var digest = crypto_crypto.sha256.convert(bytes);
+  return digest.toString();
+}
+
+/// Returns SHA-512 hash
+String sha512(Uint8List bytes) {
+  var digest = crypto_crypto.sha512.convert(bytes);
+  return digest.toString();
+}
+
+/// Returns true if byte1 and bytes2 are identical, false if not
+bool identicalBinaries(Uint8List bytes1, Uint8List bytes2) {
+  if (bytes1.length != bytes2.length) return false;
+  for (int i = 0; i < bytes1.length; i++) {
+    if (bytes1[i] != bytes2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/// Installs bytes to temp dir and returns the full path of that file
+String installBinaryToTempDir(
+  Uint8List bytes, {
+  String prefix = '',
+  suffix = '',
+  int trial = 0,
+}) {
+  var sha = md5(bytes);
+  String fileName = prefix + sha + (trial == 0 ? '' : '_$trial') + suffix;
+  String path = path_path.join(pathOfTempDir, fileName).replaceAll(r'\', '/');
+  if (!fileExists(path)) {
+    String uuid = uuidTimeBased();
+    writeFileBytes('$path.$uuid', bytes);
+    try {
+      dart_io.File('$path.$uuid').renameSync(path);
+    } catch (_) {}
+  }
+  Uint8List bytes2 = readFileBytes(path);
+  if (identicalBinaries(bytes, bytes2)) {
+    return path;
+  }
+  return installBinaryToTempDir(
+    bytes,
+    prefix: prefix,
+    suffix: suffix,
+    trial: trial + 1,
+  );
 }

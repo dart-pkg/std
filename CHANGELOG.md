@@ -148,3 +148,16 @@
 -  text_serializer: ^2025.430.1719
 +  text_serializer: ^2025.502.1757
 ```
+
+## 2025.502.2210
+
+- Added: uuidTimeBased(), uuidRandom(), uuidForNamespace(String ns), md5(Uint8List bytes), sha1(Uint8List bytes), sha224(Uint8List bytes), sha256(Uint8List bytes), sha512(Uint8List bytes), identicalBinaries(Uint8List bytes1, Uint8List bytes2), installBinaryToTempDir(Uint8List bytes, {String prefix = '', suffix = '', int trial = 0})
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.502.2031
++version: 2025.502.2210
++  crypto: ^3.0.6
++  uuid: ^4.5.1
+```
