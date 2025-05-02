@@ -408,3 +408,14 @@ String installBinaryToTempDir(
     trial: trial + 1,
   );
 }
+
+/// Converts illegal characters for dart package name to underscore (_)
+String adjustPackageName(String name) {
+  name = name.replaceAllMapped(RegExp(r'[^_0-9a-zA-Z]+'), (match) {
+    return '_';
+  });
+  while (name.contains('__')) {
+    name = name.replaceAll('__', '_');
+  }
+  return name;
+}

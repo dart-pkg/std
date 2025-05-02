@@ -183,3 +183,14 @@
 -version: 2025.502.2312
 +version: 2025.502.2329
 ```
+
+## 2025.502.2358
+
+- Added adjustPackageName(String name)
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.502.2329
++version: 2025.502.2358
+```
