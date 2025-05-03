@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'dart:convert' as dart_convert;
 import 'package:test/test.dart';
 import 'package:std/misc.dart';
-import 'package:output/output.dart';
+import 'package:debug_output/debug_output.dart';
 import 'package:text_serializer/text_serializer.dart';
 
 void main() {
@@ -39,26 +39,56 @@ void main() {
       expect(isTextFile('test/misc_test.dart'), isTrue);
     });
     test('pathExpand()', () {
-      String result = pathExpand(r'$HOME/cmd/$XYZ');
-      echo(result, r'result');
-      expect(result == r'''D:/home11/cmd/$XYZ''', isTrue);
-      result = pathExpand(r'${HOME}/cmd/${XYZ}');
-      echo(result, r'result');
-      expect(result == r'''D:/home11/cmd/${XYZ}''', isTrue);
-      result = pathExpand(r'~/cmd/${XYZ}');
-      echo(result, r'result');
-      expect(result == r'''D:/home11/cmd/${XYZ}''', isTrue);
-      result = pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}');
-      echo(result, r'result');
-      expect(result == r'''C:/Users/user/CLANG64/${XYZ}''', isTrue);
+      String result;
+      result = echo(pathExpand(r'$HOME/cmd/$XYZ'));
+      //echo(result, title: r'result');
+      expect(
+        result ==
+            r'''
+`D:/home11/cmd/$XYZ`
+''',
+        isTrue,
+      );
+      result = echo(pathExpand(r'${HOME}/cmd/${XYZ}'));
+      expect(
+        result ==
+            r'''
+`D:/home11/cmd/${XYZ}`
+''',
+        isTrue,
+      );
+      result = echo(pathExpand(r'~/cmd/${XYZ}'));
+      expect(
+        result ==
+            r'''
+`D:/home11/cmd/${XYZ}`
+''',
+        isTrue,
+      );
+      result = echo(pathExpand(r'~'));
+      expect(
+        result ==
+            r'''
+`D:/home11`
+''',
+        isTrue,
+      );
+      result = echo(pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}'));
+      expect(
+        result ==
+            r'''
+`C:/Users/user/CLANG64/${XYZ}`
+''',
+        isTrue,
+      );
     });
     test('readFileString()', () {
       String result = readFileString(r'$HOME/.bashrc');
-      echoJson(result);
+      echo(result, type: 'json');
       expect(result.contains('\r\n'), isFalse);
     });
     test('pathOfTempDir', () {
-      echo(pathOfTempDir, 'pathOfTempDir');
+      echo(pathOfTempDir, title: 'pathOfTempDir');
     });
     test('installBinaryToTempDir()', () {
       Uint8List bytes = dart_convert.utf8.encode('abcハロー©');
