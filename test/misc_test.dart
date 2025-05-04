@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_single_quotes
 import 'dart:typed_data';
 import 'dart:convert' as dart_convert;
 import 'package:test/test.dart';
@@ -104,6 +103,49 @@ pathOfUserDir ==> `C:/Users/user`
     test('installBinaryToTempDir()', () {
       Uint8List bytes = dart_convert.utf8.encode('abcハロー©');
       echo(installBinaryToTempDir(bytes, prefix: 'test-', suffix: '.txt'));
+    });
+    test('pathJoin', () {
+      String result;
+      result = echo(pathJoin(['~', 'cmd']));
+      expect(
+        result ==
+            r'''
+`D:/home11/cmd`
+''',
+        isTrue,
+      );
+      result = echo(pathJoin([r'$HOME', 'cmd']));
+      expect(
+        result ==
+            r'''
+`D:/home11/cmd`
+''',
+        isTrue,
+      );
+      result = echo(pathJoin([r'$HOME', 'pub', 'dart_scan', 'lib']));
+      expect(
+        result ==
+            r'''
+`D:/home11/pub/dart_scan/lib`
+''',
+        isTrue,
+      );
+      result = echo(pathJoin([r'$HOME']));
+      expect(
+        result ==
+            r'''
+`D:/home11`
+''',
+        isTrue,
+      );
+      result = echo(pathJoin([]));
+      expect(
+        result ==
+            r'''
+``
+''',
+        isTrue,
+      );
     });
   });
 }

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:path/path.dart' as path_path;
 import 'package:crypto/crypto.dart' as crypto_crypto;
 import 'package:uuid/uuid.dart' as uuid_uuid;
-import 'package:std/sys_info.dart' as sys_info;
+import 'package:system_info2/system_info2.dart' as sys_info;
 
 /// Makes a command line string from List of String (arg list).
 String joinCommandLine(List<String> command) {
@@ -159,7 +159,20 @@ String pathExpand(String path) {
     String? varValue = getenv(varName);
     return varValue ?? match.group(0)!;
   });
-  return path.replaceAll(r'\', '/');
+  //return path.replaceAll(r'\', '/');
+  return pathFullName(path);
+}
+
+/// Joins the given path parts into a single path
+String pathJoin(List<String> parts) {
+  if (parts.isEmpty) {
+    return '';
+  }
+  String path = parts[0];
+  for (int i = 1; i < parts.length; i++) {
+    path = path_path.join(path, parts[i]);
+  }
+  return pathExpand(path);
 }
 
 /// Sets current directory

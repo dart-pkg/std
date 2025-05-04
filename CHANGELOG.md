@@ -219,3 +219,14 @@
 -  output: ^2025.502.1958
 +  system_info2: ^4.0.0
 ```
+
+## 2025.504.1244
+
+- Added pathJoin(List<String> parts)
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.504.1143
++version: 2025.504.1244
+```
