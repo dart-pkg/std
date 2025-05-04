@@ -8,9 +8,18 @@ import 'package:text_serializer/text_serializer.dart';
 void main() {
   group('Misc', () {
     test('splitCommandLine()', () {
-      var result = splitCommandLine(r'''ls -l''');
-      echo(toJson(result));
-      expect(toJson(result) == r'''["ls","-l"]''', isTrue);
+      String result;
+      var line = splitCommandLine(r'''ls -l''');
+      result = echo(line, type: 'json');
+      expect(
+        result,
+        equals(r'''
+[
+  "ls",
+  "-l"
+]
+'''),
+      );
     });
     test('timeBasedVersionString()', () {
       echo(timeBasedVersionString());
@@ -40,45 +49,39 @@ void main() {
     test('pathExpand()', () {
       String result;
       result = echo(pathExpand(r'$HOME/cmd/$XYZ'));
-      //echo(result, title: r'result');
       expect(
-        result ==
-            r'''
+        result,
+        equals(r'''
 `D:/home11/cmd/$XYZ`
-''',
-        isTrue,
+'''),
       );
       result = echo(pathExpand(r'${HOME}/cmd/${XYZ}'));
       expect(
-        result ==
-            r'''
+        result,
+        equals(r'''
 `D:/home11/cmd/${XYZ}`
-''',
-        isTrue,
+'''),
       );
       result = echo(pathExpand(r'~/cmd/${XYZ}'));
       expect(
-        result ==
-            r'''
+        result,
+        equals(r'''
 `D:/home11/cmd/${XYZ}`
-''',
-        isTrue,
+'''),
       );
       result = echo(pathExpand(r'~'));
       expect(
-        result ==
-            r'''
+        result,
+        equals(r'''
 `D:/home11`
-''',
-        isTrue,
+'''),
       );
       result = echo(pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}'));
       expect(
-        result ==
-            r'''
+        result,
+        equals(r'''
 `C:/Users/user/CLANG64/${XYZ}`
-''',
-        isTrue,
+'''),
       );
     });
     test('readFileString()', () {
@@ -91,14 +94,8 @@ void main() {
     });
     test('pathOfUserDir', () {
       String result;
-      result = echo(pathOfUserDir, title: 'pathOfUserDir');
-      expect(
-        result ==
-            r'''
-pathOfUserDir ==> `C:/Users/user`
-''',
-        isTrue,
-      );
+      result = echo(pathOfUserDir, title: 'pathOfUserDir').trimRight();
+      expect(result, equals(r'''pathOfUserDir ==> `C:/Users/user`'''));
     });
     test('installBinaryToTempDir()', () {
       Uint8List bytes = dart_convert.utf8.encode('abcハロー©');
@@ -108,43 +105,38 @@ pathOfUserDir ==> `C:/Users/user`
       String result;
       result = echo(pathJoin(['~', 'cmd']));
       expect(
-        result ==
+        result, equals(
             r'''
 `D:/home11/cmd`
-''',
-        isTrue,
+''')
       );
       result = echo(pathJoin([r'$HOME', 'cmd']));
       expect(
-        result ==
+        result, equals(
             r'''
 `D:/home11/cmd`
-''',
-        isTrue,
+''')
       );
       result = echo(pathJoin([r'$HOME', 'pub', 'dart_scan', 'lib']));
       expect(
-        result ==
+        result, equals(
             r'''
 `D:/home11/pub/dart_scan/lib`
-''',
-        isTrue,
+''')
       );
       result = echo(pathJoin([r'$HOME']));
       expect(
-        result ==
+        result, equals(
             r'''
 `D:/home11`
-''',
-        isTrue,
+''')
       );
       result = echo(pathJoin([]));
       expect(
-        result ==
+        result, equals(
             r'''
 ``
-''',
-        isTrue,
+''')
       );
     });
   });
