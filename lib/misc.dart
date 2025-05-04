@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:path/path.dart' as path_path;
 import 'package:crypto/crypto.dart' as crypto_crypto;
 import 'package:uuid/uuid.dart' as uuid_uuid;
+import 'package:std/sys_info.dart' as sys_info;
 
 /// Makes a command line string from List of String (arg list).
 String joinCommandLine(List<String> command) {
@@ -270,6 +271,11 @@ void pathRename(String oldPath, String newPath) {
 /// Returns system temporary directory path
 String get pathOfTempDir {
   return pathFullName(dart_io.Directory.systemTemp.path);
+}
+
+/// Returns system temporary directory path
+String get pathOfUserDir {
+  return pathFullName(sys_info.SysInfo.userDirectory);
 }
 
 /// Reads file content as bytes

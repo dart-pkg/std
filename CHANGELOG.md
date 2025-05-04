@@ -206,3 +206,16 @@
 +version: 2025.504.612
 +  debug_output: ^2025.502.2007
 ```
+
+## 2025.504.1143
+
+- Added 'String get pathOfUserDir'
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.504.612
++version: 2025.504.1143
+-  output: ^2025.502.1958
++  system_info2: ^4.0.0
+```

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:output/output.dart';
+import 'package:debug_output/debug_output.dart';
 import 'package:std/command_runner.dart';
 
 main() async {
@@ -12,7 +12,7 @@ main() async {
       echo('run1');
       var runner = CommandRunner();
       String ls = await runner.run$(['ls', '-l'], silent: true);
-      echo(ls, 'ls');
+      echo(ls, title: 'ls');
       await runner.run('ping -n 2 www.youtube.com');
       runner = CommandRunner(encoding: SystemEncoding());
       await runner.run('ping -n 2 www.youtube.com');

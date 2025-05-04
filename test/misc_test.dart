@@ -90,6 +90,17 @@ void main() {
     test('pathOfTempDir', () {
       echo(pathOfTempDir, title: 'pathOfTempDir');
     });
+    test('pathOfUserDir', () {
+      String result;
+      result = echo(pathOfUserDir, title: 'pathOfUserDir');
+      expect(
+        result ==
+            r'''
+pathOfUserDir ==> `C:/Users/user`
+''',
+        isTrue,
+      );
+    });
     test('installBinaryToTempDir()', () {
       Uint8List bytes = dart_convert.utf8.encode('abcハロー©');
       echo(installBinaryToTempDir(bytes, prefix: 'test-', suffix: '.txt'));
