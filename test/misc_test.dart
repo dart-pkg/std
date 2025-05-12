@@ -3,7 +3,6 @@ import 'dart:convert' as dart_convert;
 import 'package:test/test.dart';
 import 'package:std/misc.dart';
 import 'package:debug_output/debug_output.dart';
-import 'package:text_serializer/text_serializer.dart';
 
 void main() {
   group('Misc', () {
@@ -17,8 +16,7 @@ void main() {
 [
   "ls",
   "-l"
-]
-'''),
+]'''),
       );
     });
     test('timeBasedVersionString()', () {
@@ -52,36 +50,31 @@ void main() {
       expect(
         result,
         equals(r'''
-`D:/home11/cmd/$XYZ`
-'''),
+`D:/home11/cmd/$XYZ`'''),
       );
       result = echo(pathExpand(r'${HOME}/cmd/${XYZ}'));
       expect(
         result,
         equals(r'''
-`D:/home11/cmd/${XYZ}`
-'''),
+`D:/home11/cmd/${XYZ}`'''),
       );
       result = echo(pathExpand(r'~/cmd/${XYZ}'));
       expect(
         result,
         equals(r'''
-`D:/home11/cmd/${XYZ}`
-'''),
+`D:/home11/cmd/${XYZ}`'''),
       );
       result = echo(pathExpand(r'~'));
       expect(
         result,
         equals(r'''
-`D:/home11`
-'''),
+`D:/home11`'''),
       );
       result = echo(pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}'));
       expect(
         result,
         equals(r'''
-`C:/Users/user/CLANG64/${XYZ}`
-'''),
+`C:/Users/user/CLANG64/${XYZ}`'''),
       );
     });
     test('readFileString()', () {
@@ -105,38 +98,33 @@ void main() {
       String result;
       result = echo(pathJoin(['~', 'cmd']));
       expect(
-        result, equals(
-            r'''
-`D:/home11/cmd`
-''')
+        result,
+        equals(r'''
+`D:/home11/cmd`'''),
       );
       result = echo(pathJoin([r'$HOME', 'cmd']));
       expect(
-        result, equals(
-            r'''
-`D:/home11/cmd`
-''')
+        result,
+        equals(r'''
+`D:/home11/cmd`'''),
       );
       result = echo(pathJoin([r'$HOME', 'pub', 'dart_scan', 'lib']));
       expect(
-        result, equals(
-            r'''
-`D:/home11/pub/dart_scan/lib`
-''')
+        result,
+        equals(r'''
+`D:/home11/pub/dart_scan/lib`'''),
       );
       result = echo(pathJoin([r'$HOME']));
       expect(
-        result, equals(
-            r'''
-`D:/home11`
-''')
+        result,
+        equals(r'''
+`D:/home11`'''),
       );
       result = echo(pathJoin([]));
       expect(
-        result, equals(
-            r'''
-``
-''')
+        result,
+        equals(r'''
+``'''),
       );
     });
   });

@@ -5,6 +5,7 @@ import 'package:path/path.dart' as path_path;
 import 'package:crypto/crypto.dart' as crypto_crypto;
 import 'package:uuid/uuid.dart' as uuid_uuid;
 import 'package:system_info2/system_info2.dart' as sys_info;
+import 'package:intl/intl.dart' as intl_intl;
 
 /// Makes a command line string from List of String (arg list).
 String joinCommandLine(List<String> command) {
@@ -67,13 +68,18 @@ String _adjustVersionString(String s) {
 
 /// Returns local time based version string
 String timeBasedVersionString() {
+  // final now = DateTime.now();
+  // String year = '${now.year}';
+  // String month = lastChars('0${now.month}', 2);
+  // String day = lastChars('0${now.day}', 2);
+  // String hour = lastChars('0${now.hour}', 2);
+  // String minute = lastChars('0${now.minute}', 2);
+  // String version = '$year.$month$day.$hour$minute';
+  // version = _adjustVersionString(version);
+  // return version;
   final now = DateTime.now();
-  String year = '${now.year}';
-  String month = lastChars('0${now.month}', 2);
-  String day = lastChars('0${now.day}', 2);
-  String hour = lastChars('0${now.hour}', 2);
-  String minute = lastChars('0${now.minute}', 2);
-  String version = '$year.$month$day.$hour$minute';
+  final formatter1 = intl_intl.DateFormat('yyyy.MMdd.HHmm');
+  String version = formatter1.format(now);
   version = _adjustVersionString(version);
   return version;
 }

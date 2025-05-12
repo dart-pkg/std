@@ -230,3 +230,18 @@
 -version: 2025.504.1143
 +version: 2025.504.1244
 ```
+
+## 2025.513.452
+
+- Modified timeBasedVersionString()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.504.1244
++version: 2025.513.452
+-  test: ^1.25.15
+-  text_serializer: ^2025.502.1757
++  test: ^1.26.0
++  intl: ^0.20.2
+```
