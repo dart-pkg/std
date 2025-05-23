@@ -83,7 +83,7 @@ class CommandRunner {
       executable = _unquote(executable);
       arguments = arguments.map((x) => _unquote(x)).toList();
     }
-    print('[$workingDirectory] \$ $display');
+    print('#[$workingDirectory] \$ $display');
     var completer = dart_async.Completer<dynamic>();
     String buffer = '';
     dart_io.Process.start(

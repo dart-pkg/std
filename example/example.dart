@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:std/command_runner.dart';
 
-main() async {
+Future<void> main() async {
   var shell = CommandRunner(useUnixShell: true);
 
   // Pipe results to string, easily.

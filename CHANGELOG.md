@@ -245,3 +245,18 @@
 +  test: ^1.26.0
 +  intl: ^0.20.2
 ```
+
+## 2025.523.1949
+
+- Modified command_runner.dart
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.513.452
++version: 2025.523.1949
+-  lints: ^5.1.1
+-  test: ^1.26.0
++  lints: ^6.0.0
++  test: ^1.26.2
+```

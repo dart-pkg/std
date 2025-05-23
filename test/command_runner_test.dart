@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import 'package:debug_output/debug_output.dart';
 import 'package:std/command_runner.dart';
 
-main() async {
+Future<void> main() async {
   group('Run', () {
     test('run1', () async {
       echo('run1');
