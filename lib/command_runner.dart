@@ -23,6 +23,7 @@ class CommandRunner {
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
     bool silent = false,
+    bool noPrompt = false,
     bool returnCode = false,
   }) async {
     List<String> split = std_misc.splitCommandLine(command);
@@ -32,6 +33,7 @@ class CommandRunner {
       workingDirectory: workingDirectory,
       environment: environment,
       silent: silent,
+      noPrompt: noPrompt,
       returnCode: returnCode,
       autoQuote: false,
     );
@@ -63,6 +65,7 @@ class CommandRunner {
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
     bool silent = false,
+    bool noPrompt = false,
     bool returnCode = false,
     bool autoQuote = true,
   }) async {
@@ -84,7 +87,9 @@ class CommandRunner {
       arguments = arguments.map((x) => _unquote(x)).toList();
     }
     //print('[$workingDirectory] \$ $display');
-    dart_io.stderr.write('[$workingDirectory] \$ $display\n');
+    if (!noPrompt) {
+      dart_io.stderr.write('[$workingDirectory] \$ $display\n');
+    }
     var completer = dart_async.Completer<dynamic>();
     String buffer = '';
     dart_io.Process.start(
@@ -118,13 +123,6 @@ class CommandRunner {
             '$display, exitCode $code, workingDirectory: $workingDirectory',
           );
         }
-        // if (buffer.endsWith('\r\n')) {
-        //   buffer = buffer.substring(0, buffer.length - 2);
-        // } else if (buffer.endsWith('\n')) {
-        //   buffer = buffer.substring(0, buffer.length - 1);
-        // } else if (buffer.endsWith('\r')) {
-        //   buffer = buffer.substring(0, buffer.length - 1);
-        // }
         buffer = buffer.trimRight();
         buffer = std_misc.adjustTextNewlines(buffer);
         completer.complete(buffer);

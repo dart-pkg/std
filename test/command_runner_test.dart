@@ -11,8 +11,13 @@ Future<void> main() async {
     test('run1', () async {
       echo('run1');
       var runner = CommandRunner();
-      String ls = await runner.run$(['ls', '-l'], silent: true);
-      echo(ls, title: 'ls');
+      String ls = await runner.run$(
+        ['ls', '-l'],
+        encoding: utf8,
+        silent: true,
+        noPrompt: true,
+      );
+      echo(ls, title: 'ls -l');
       await runner.run('ping -n 2 www.youtube.com');
       runner = CommandRunner(encoding: SystemEncoding());
       await runner.run('ping -n 2 www.youtube.com');
