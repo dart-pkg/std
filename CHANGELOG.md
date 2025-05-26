@@ -304,3 +304,14 @@
 -version: 2025.526.1746
 +version: 2025.526.1751
 ```
+
+## 2025.526.2025
+
+- Modified pathFullName()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.526.1751
++version: 2025.526.2025
+```

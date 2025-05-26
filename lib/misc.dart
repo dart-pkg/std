@@ -166,7 +166,8 @@ String pathExpand(String path) {
     return varValue ?? match.group(0)!;
   });
   //return path.replaceAll(r'\', '/');
-  return pathFullName(path);
+  //return pathFullName(path);
+  return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
 }
 
 /// Joins the given path parts into a single path
@@ -194,7 +195,8 @@ String getCwd() {
 
 /// Returns full path of a path
 String pathFullName(String path) {
-  return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
+  return pathExpand(path);
+  //return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
 }
 
 /// Returns directory part of a path
