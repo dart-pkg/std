@@ -185,7 +185,7 @@ String pathJoin(List<String> parts) {
 /// Sets current directory
 void setCwd(String path) {
   path = pathExpand(path);
-  dart_io.Directory.current = pathFullName(path);
+  dart_io.Directory.current = path; //pathFullName(path);
 }
 
 /// Gets current directory
@@ -202,7 +202,8 @@ String pathFullName(String path) {
 /// Returns directory part of a path
 String pathDirectoryName(String path) {
   path = pathExpand(path);
-  return pathFullName(path_path.dirname(path));
+  //return pathFullName(path_path.dirname(path));
+  return path_path.dirname(path);
 }
 
 /// Returns file name part of a path
