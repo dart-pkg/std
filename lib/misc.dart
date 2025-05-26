@@ -148,6 +148,8 @@ String pathExpand(String path) {
     String? home = getenv('HOME');
     if (home != null) {
       path = '$home${path.substring(1)}';
+    } else {
+      path = '$pathOfUserDir${path.substring(1)}';
     }
   }
   path = path.replaceAllMapped(RegExp(r'[$]([_0-9a-zA-Z]+)'), (match) {
