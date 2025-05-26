@@ -1,6 +1,8 @@
 import 'dart:convert' as dart_convert;
 import 'dart:io' as dart_io;
 import 'dart:typed_data';
+import 'package:archive/archive.dart' as archive_archive;
+import 'package:http/http.dart' as http_http;
 import 'package:path/path.dart' as path_path;
 import 'package:crypto/crypto.dart' as crypto_crypto;
 import 'package:uuid/uuid.dart' as uuid_uuid;
@@ -475,4 +477,101 @@ String adjustPackageName(String name) {
     name = name.replaceAll('__', '_');
   }
   return name;
+}
+
+///
+String reformatUglyYaml(String yaml) {
+  List<String> lines1 = textToLines(yaml);
+  List<String> lines2 = <String>[];
+  for (int i = 0; i < lines1.length; i++) {
+    if (i > 0) {
+      if (lines1[i] == '' && lines1[i - 1] == '') {
+        continue;
+      }
+    }
+    lines2.add(lines1[i]);
+  }
+  yaml = lines2.join('\n');
+  if (yaml.endsWith('\n\n')) {
+    yaml = yaml.substring(0, yaml.length - 1);
+  } else if (!yaml.endsWith('\n')) {
+    yaml += '\n';
+  }
+  return yaml;
+}
+
+///
+void reformatUglyYamlFile(String yamlPath) {
+  String yaml = readFileString(yamlPath);
+  writeFileString(yamlPath, reformatUglyYaml(yaml));
+}
+
+///
+Future<String?> httpGetBodyAsync(String $urlString) async {
+  try {
+    var url = Uri.parse($urlString);
+    var response = await http_http.get(url);
+    if (response.statusCode != 200) {
+      return null;
+    }
+    return response.body;
+  } catch ($e) {
+    return null;
+  }
+}
+
+///
+void unzipToDirectory(dynamic pathOrBytes, String destDir) {
+  Uint8List bytes;
+  if (pathOrBytes is String) {
+    String zipPath = pathOrBytes;
+    zipPath = pathFullName(pathExpand(zipPath));
+    destDir = pathFullName(pathExpand(destDir));
+    bytes = dart_io.File(zipPath).readAsBytesSync();
+  } else if (pathOrBytes is Uint8List) {
+    bytes = pathOrBytes;
+  } else {
+    throw ArgumentError();
+  }
+  final archive = archive_archive.ZipDecoder().decodeBytes(bytes);
+  for (final entry in archive) {
+    if (entry.isFile) {
+      var fileBytes = entry.readBytes();
+      fileBytes = fileBytes!;
+      if (isText(fileBytes)) {
+        String text = dart_convert.utf8.decode(fileBytes);
+        text = adjustTextNewlines(text);
+        fileBytes = dart_convert.utf8.encode(text);
+      }
+      writeFileBytes('$destDir/${entry.name}', fileBytes);
+    }
+  }
+}
+
+///
+void untarToDirectory(dynamic pathOrBytes, String destDir) {
+  Uint8List bytes;
+  if (pathOrBytes is String) {
+    String zipPath = pathOrBytes;
+    zipPath = pathFullName(pathExpand(zipPath));
+    destDir = pathFullName(pathExpand(destDir));
+    bytes = dart_io.File(zipPath).readAsBytesSync();
+  } else if (pathOrBytes is Uint8List) {
+    bytes = pathOrBytes;
+  } else {
+    throw ArgumentError();
+  }
+  final archive = archive_archive.TarDecoder().decodeBytes(bytes);
+  for (final entry in archive) {
+    if (entry.isFile) {
+      var fileBytes = entry.readBytes();
+      fileBytes = fileBytes!;
+      if (isText(fileBytes)) {
+        String text = dart_convert.utf8.decode(fileBytes);
+        text = adjustTextNewlines(text);
+        fileBytes = dart_convert.utf8.encode(text);
+      }
+      writeFileBytes('$destDir/${entry.name}', fileBytes);
+    }
+  }
 }
