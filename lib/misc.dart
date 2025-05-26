@@ -6,6 +6,9 @@ import 'package:crypto/crypto.dart' as crypto_crypto;
 import 'package:uuid/uuid.dart' as uuid_uuid;
 import 'package:system_info2/system_info2.dart' as sys_info;
 import 'package:intl/intl.dart' as intl_intl;
+import 'package:std/stack.dart' as std_stack;
+
+final _cwdStack = std_stack.Stack<String>();
 
 /// Makes a command line string from List of String (arg list).
 String joinCommandLine(List<String> command) {
@@ -110,15 +113,17 @@ bool isText(Uint8List bytes) {
 }
 
 /// Returns true if file's content is binary else false
-bool isBinaryFile(String file) {
-  final f = dart_io.File(file);
+bool isBinaryFile(String path) {
+  path = pathExpand(path);
+  final f = dart_io.File(path);
   Uint8List bytes = f.readAsBytesSync();
   return isBinary(bytes);
 }
 
 /// Returns false if file's content is binary else true
-bool isTextFile(String file) {
-  final f = dart_io.File(file);
+bool isTextFile(String path) {
+  path = pathExpand(path);
+  final f = dart_io.File(path);
   Uint8List bytes = f.readAsBytesSync();
   return !isBinary(bytes);
 }
@@ -204,6 +209,17 @@ void setCwd(String path) {
 /// Gets current directory
 String getCwd() {
   return pathFullName(dart_io.Directory.current.absolute.path);
+}
+
+/// pushd
+void pushd(String path) {
+  _cwdStack.push(getCwd());
+  setCwd(path);
+}
+
+/// popd
+void popd() {
+  setCwd(_cwdStack.pop());
 }
 
 /// Returns full path of a path

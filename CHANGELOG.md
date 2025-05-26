@@ -348,3 +348,14 @@
 -version: 2025.526.2046
 +version: 2025.526.2206
 ```
+
+## 2025.526.2313
+
+- Added: Stack<E>, pushd(), popd()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.526.2206
++version: 2025.526.2313
+```

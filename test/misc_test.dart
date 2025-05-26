@@ -61,10 +61,10 @@ void main() {
       }
       listD.add(0);
       expect(isBinary(Uint8List.fromList(listD)), isTrue);
-      expect(isBinaryFile('test/favicon.png'), isTrue);
-      expect(isBinaryFile('test/misc_test.dart'), isFalse);
-      expect(isTextFile('test/favicon.png'), isFalse);
-      expect(isTextFile('test/misc_test.dart'), isTrue);
+      expect(isBinaryFile('~/pub/std/test/favicon.png'), isTrue);
+      expect(isBinaryFile('~/pub/std/test/misc_test.dart'), isFalse);
+      expect(isTextFile('~/pub/std/test/favicon.png'), isFalse);
+      expect(isTextFile('~/pub/std/test/misc_test.dart'), isTrue);
     });
     test('pathExpand()', () {
       String result;
