@@ -337,3 +337,14 @@
 -version: 2025.526.2028
 +version: 2025.526.2046
 ```
+
+## 2025.526.2206
+
+- Added pathRelative()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.526.2046
++version: 2025.526.2206
+```

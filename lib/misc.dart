@@ -144,6 +144,9 @@ String? getenv(String name) {
 
 /// Expands path with environment variables
 String pathExpand(String path) {
+  if (path.contains('://')) {
+    return path;
+  }
   if (path.startsWith('~')) {
     String? home = getenv('HOME');
     if (home != null) {
@@ -170,6 +173,14 @@ String pathExpand(String path) {
   //return path.replaceAll(r'\', '/');
   //return pathFullName(path);
   return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
+}
+
+String pathRelative(String path, {String? from}) {
+  path = pathExpand(path);
+  if (from != null) {
+    from = pathExpand(from);
+  }
+  return path_path.relative(path, from: from).replaceAll('\\', '/');
 }
 
 /// Joins the given path parts into a single path

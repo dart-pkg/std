@@ -6,6 +6,28 @@ import 'package:debug_output/debug_output.dart';
 
 void main() {
   group('Misc', () {
+    test('expand url', () {
+      String result;
+      String exp = pathExpand('https://www.youtube.com/xyz/../abc');
+      result = echo(exp, type: 'json');
+      expect(result, equals(r'''"https://www.youtube.com/xyz/../abc"'''));
+    });
+    test('pathRelative()', () {
+      String result;
+      String rel;
+      rel = pathRelative(
+        'https://www.youtube.com/xyz/',
+        from: 'https://www.youtube.com/abc/',
+      );
+      result = echo(rel, type: 'json');
+      expect(result, equals(r'''"../xyz"'''));
+      rel = pathRelative(r'D:\home11\cmd');
+      result = echo(rel, type: 'json');
+      expect(result, equals(r'''"../../cmd"'''));
+      rel = pathRelative(r'~\cmd', from: '.');
+      result = echo(rel, type: 'json');
+      expect(result, equals(r'''"../../cmd"'''));
+    });
     test('splitCommandLine()', () {
       String result;
       var line = splitCommandLine(r'''ls -l''');
