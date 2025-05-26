@@ -3,6 +3,12 @@ import 'dart:async' as dart_async;
 import 'dart:convert' as dart_convert;
 import 'package:std/misc.dart' as std_misc;
 
+// String _padBase64(String rawBase64) {
+//   return (rawBase64.length % 4 > 0)
+//       ? rawBase64 += List.filled(4 - (rawBase64.length % 4), '=').join('')
+//       : rawBase64;
+// }
+
 /// Process manager for executing command lines
 class CommandRunner {
   bool useUnixShell;
@@ -14,6 +20,44 @@ class CommandRunner {
     this.unixShell = 'bash',
     this.encoding /* = null */, //convert__.utf8,
   });
+
+  Future<dynamic> script(
+    String script, {
+    dart_convert.Encoding? encoding,
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool silent = false,
+    bool noPrompt = false,
+    bool returnCode = false,
+  }) async {
+    if (!script.endsWith('\n')) {
+      script += '\n';
+    }
+    if (workingDirectory != null) {
+      workingDirectory = std_misc.pathExpand(workingDirectory);
+    }
+    workingDirectory ??= dart_io.Directory.current.absolute.path;
+    if (!noPrompt) {
+      //print('[$workingDirectory]\n<script>\n$script</script>');
+      dart_io.stderr.write('[$workingDirectory]\n<script>\n$script</script>\n');
+    }
+    //String b64 = _padBase64(dart_convert.base64.encode(dart_convert.utf8.encode(script)));
+    String b64 = dart_convert.base64.encode(dart_convert.utf8.encode(script));
+    //print('b64: $b64');
+    String command = 'echo $b64 | base64 -di | bash';
+    //print(command);
+    return run(
+      command,
+      encoding: encoding,
+      workingDirectory: workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      silent: silent,
+      noPrompt: true,
+      returnCode: returnCode,
+    );
+  }
 
   /// Execute command and returns stdout
   Future<dynamic> run(
@@ -89,8 +133,8 @@ class CommandRunner {
       executable = _unquote(executable);
       arguments = arguments.map((x) => _unquote(x)).toList();
     }
-    //print('[$workingDirectory] \$ $display');
     if (!noPrompt) {
+      //print('[$workingDirectory] \$ $display');
       dart_io.stderr.write('[$workingDirectory] \$ $display\n');
     }
     var completer = dart_async.Completer<dynamic>();

@@ -11,6 +11,11 @@ Future<void> main() async {
     test('run1', () async {
       echo('run1');
       var runner = CommandRunner();
+      await runner.script('''
+set -uvx
+set -e
+ls -ltr
+echo あああ''', encoding: utf8);
       String ls = await runner.run$(
         ['ls', '-l'],
         encoding: utf8,

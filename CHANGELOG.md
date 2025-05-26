@@ -372,3 +372,14 @@
 +  archive: ^4.0.7
 +  http: ^1.4.0
 ```
+
+## 2025.527.154
+
+- Add: CommandRunner.script()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.526.2333
++version: 2025.527.154
+```
