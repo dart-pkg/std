@@ -293,3 +293,14 @@
 -version: 2025.525.1954
 +version: 2025.526.1746
 ```
+
+## 2025.526.1751
+
+- Modified std/command_runner.dart
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.526.1746
++version: 2025.526.1751
+```
