@@ -15,7 +15,8 @@ Future<void> main() async {
         ['ls', '-l'],
         encoding: utf8,
         silent: true,
-        noPrompt: true,
+        //noPrompt: true,
+        workingDirectory: '~/',
       );
       echo(ls, title: 'ls -l');
       await runner.run('ping -n 2 www.youtube.com');

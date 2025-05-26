@@ -73,6 +73,7 @@ class CommandRunner {
     List<String> arguments = command.sublist(1).toList();
     encoding ??= this.encoding;
     workingDirectory ??= dart_io.Directory.current.absolute.path;
+    workingDirectory = std_misc.pathExpand(workingDirectory);
     if (autoQuote) {
       executable = _quote(executable);
       arguments = arguments.map((x) => _quote(x)).toList();
