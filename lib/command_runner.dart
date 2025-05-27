@@ -23,6 +23,7 @@ class CommandRunner {
 
   Future<dynamic> script(
     String script, {
+    List<String>? arguments,
     dart_convert.Encoding? encoding,
     String? workingDirectory,
     Map<String, String>? environment,
@@ -34,6 +35,7 @@ class CommandRunner {
     if (!script.endsWith('\n')) {
       script += '\n';
     }
+    arguments ??= [];
     if (workingDirectory != null) {
       workingDirectory = std_misc.pathExpand(workingDirectory);
     }
@@ -45,7 +47,11 @@ class CommandRunner {
     //String b64 = _padBase64(dart_convert.base64.encode(dart_convert.utf8.encode(script)));
     String b64 = dart_convert.base64.encode(dart_convert.utf8.encode(script));
     //print('b64: $b64');
-    String command = 'echo $b64 | base64 -di | bash';
+    //String command = useUnixShell ? 'echo $b64 | base64 -di | bash /dev/stdin' : 'echo $b64 | base64 -di | bash STDIN';
+    String command = 'echo $b64 | base64 -d | bash /dev/stdin';
+    for (int i = 0; i < arguments.length; i++) {
+      command += ' "${arguments[i]}"';
+    }
     //print(command);
     return run(
       command,
