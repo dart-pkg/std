@@ -24,7 +24,7 @@ void main() {
       pushd('C:/Windows');
       expect(getCwd(), equals('''C:/Windows'''));
       pushd('~/cmd');
-      expect(getCwd(), equals('''D:/home11/cmd'''));
+      expect(getCwd(), equals('''D:/home12/cmd'''));
       popd();
       expect(getCwd(), equals('''C:/Windows'''));
       popd();

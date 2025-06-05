@@ -6,6 +6,18 @@ import 'package:debug_output/debug_output.dart';
 
 void main() {
   group('Misc', () {
+    test('installZipToTempDir()', () {
+      String result;
+      var bytes = readFileBytes('test.zip');
+      String path = installZipToTempDir(bytes, prefix: 'test-', suffix: '.zip');
+      result = echo(path, type: 'json');
+      expect(
+        result,
+        equals(
+          r'''"C:/msys64/tmp/test-63f1da43316014a2b8e02d32f39ae7d6.zip"''',
+        ),
+      );
+    });
     test('expand url', () {
       String result;
       String exp = pathExpand('https://www.youtube.com/xyz/../abc');
@@ -21,9 +33,11 @@ void main() {
       );
       result = echo(rel, type: 'json');
       expect(result, equals(r'''"../xyz"'''));
-      rel = pathRelative(r'D:\home11\cmd');
+      setCwd('~/pub/std');
+      rel = pathRelative(r'D:\home12\cmd');
       result = echo(rel, type: 'json');
       expect(result, equals(r'''"../../cmd"'''));
+      echo(getCwd(), title: 'getCwd()');
       rel = pathRelative(r'~\cmd', from: '.');
       result = echo(rel, type: 'json');
       expect(result, equals(r'''"../../cmd"'''));
@@ -72,25 +86,25 @@ void main() {
       expect(
         result,
         equals(r'''
-`D:/home11/cmd/$XYZ`'''),
+`D:/home12/cmd/$XYZ`'''),
       );
       result = echo(pathExpand(r'${HOME}/cmd/${XYZ}'));
       expect(
         result,
         equals(r'''
-`D:/home11/cmd/${XYZ}`'''),
+`D:/home12/cmd/${XYZ}`'''),
       );
       result = echo(pathExpand(r'~/cmd/${XYZ}'));
       expect(
         result,
         equals(r'''
-`D:/home11/cmd/${XYZ}`'''),
+`D:/home12/cmd/${XYZ}`'''),
       );
       result = echo(pathExpand(r'~'));
       expect(
         result,
         equals(r'''
-`D:/home11`'''),
+`D:/home12`'''),
       );
       result = echo(pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}'));
       expect(
@@ -122,25 +136,25 @@ void main() {
       expect(
         result,
         equals(r'''
-`D:/home11/cmd`'''),
+`D:/home12/cmd`'''),
       );
       result = echo(pathJoin([r'$HOME', 'cmd']));
       expect(
         result,
         equals(r'''
-`D:/home11/cmd`'''),
+`D:/home12/cmd`'''),
       );
       result = echo(pathJoin([r'$HOME', 'pub', 'dart_scan', 'lib']));
       expect(
         result,
         equals(r'''
-`D:/home11/pub/dart_scan/lib`'''),
+`D:/home12/pub/dart_scan/lib`'''),
       );
       result = echo(pathJoin([r'$HOME']));
       expect(
         result,
         equals(r'''
-`D:/home11`'''),
+`D:/home12`'''),
       );
       result = echo(pathJoin([]));
       expect(

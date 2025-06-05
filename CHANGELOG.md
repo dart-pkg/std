@@ -394,3 +394,14 @@
 -version: 2025.527.154
 +version: 2025.527.1952
 ```
+
+## 2025.606.242
+
+- Added: installZipToTempDir()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.527.1952
++version: 2025.606.242
+```

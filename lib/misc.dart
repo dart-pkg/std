@@ -575,3 +575,63 @@ void untarToDirectory(dynamic pathOrBytes, String destDir) {
     }
   }
 }
+
+///
+bool unzipCheck(dynamic pathOrBytes, String destDir) {
+  Uint8List bytes;
+  if (pathOrBytes is String) {
+    String zipPath = pathOrBytes;
+    zipPath = pathFullName(pathExpand(zipPath));
+    destDir = pathFullName(pathExpand(destDir));
+    bytes = dart_io.File(zipPath).readAsBytesSync();
+  } else if (pathOrBytes is Uint8List) {
+    bytes = pathOrBytes;
+  } else {
+    throw ArgumentError();
+  }
+  final archive = archive_archive.ZipDecoder().decodeBytes(bytes);
+  for (final entry in archive) {
+    if (entry.isFile) {
+      var fileBytes = entry.readBytes();
+      fileBytes = fileBytes!;
+      if (isText(fileBytes)) {
+        String text = dart_convert.utf8.decode(fileBytes);
+        text = adjustTextNewlines(text);
+        fileBytes = dart_convert.utf8.encode(text);
+      }
+      //writeFileBytes('$destDir/${entry.name}', fileBytes);
+      if (!fileExists('$destDir/${entry.name}')) return false;
+      var destBytes = readFileBytes('$destDir/${entry.name}');
+      if (!identicalBinaries(fileBytes, destBytes)) return false;
+    }
+  }
+  return true;
+}
+
+/// Installs zip bytes to temp dir and returns the full path of that directory
+String installZipToTempDir(
+  Uint8List bytes, {
+  String prefix = '',
+  suffix = '',
+  int trial = 0,
+}) {
+  var sha = md5(bytes);
+  String fileName = prefix + sha + (trial == 0 ? '' : '_$trial') + suffix;
+  String path = path_path.join(pathOfTempDir, fileName).replaceAll(r'\', '/');
+  if (!directoryExists(path)) {
+    String uuid = uuidTimeBased();
+    unzipToDirectory(bytes, '$path.$uuid');
+    try {
+      pathRename('$path.$uuid', path);
+    } catch (_) {}
+  }
+  if (unzipCheck(bytes, path)) {
+    return path;
+  }
+  return installZipToTempDir(
+    bytes,
+    prefix: prefix,
+    suffix: suffix,
+    trial: trial + 1,
+  );
+}
