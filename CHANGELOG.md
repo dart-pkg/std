@@ -405,3 +405,14 @@
 -version: 2025.527.1952
 +version: 2025.606.242
 ```
+
+## 2025.606.2308
+
+- Added: encryptText(), decryptText(), encryptBytes(), and decryptBytes()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.606.242
++version: 2025.606.2308
+```

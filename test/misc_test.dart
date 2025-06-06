@@ -10,7 +10,7 @@ void main() {
       String result;
       String enc = encryptText('this is a text', 'passwd', 'iv');
       result = echo(enc, title: 'enc');
-      expect(result, equals(r'''enc ==> `mQzqbEYZkCzHBJ+oG2vGUg==`'''));
+      expect(result, equals(r'''enc ==> `osFC4ZrmBNMEUDkrbi0olg==`'''));
       String dec = decryptText(enc, 'passwd', 'iv');
       result = echo(dec, title: 'dec');
       expect(result, equals(r'''dec ==> `this is a text`'''));
@@ -28,7 +28,34 @@ void main() {
         expect(dec, equals(text));
       }
     });
+    test('encryptBytes(1)', () {
+      String result;
+      String enc = encryptBytes(
+        dart_convert.utf8.encode('this is a text'),
+        'passwd',
+        'iv',
+      );
+      result = echo(enc, title: 'enc');
+      expect(result, equals(r'''enc ==> `osFC4ZrmBNMEUDkrbi0olg==`'''));
+      String dec = dart_convert.utf8.decode(decryptBytes(enc, 'passwd', 'iv'));
+      result = echo(dec, title: 'dec');
+      expect(result, equals(r'''dec ==> `this is a text`'''));
+    });
+    test('encryptBytes(2)', () {
+      for (int i = 0; i < 10; i++) {
+        String text = uuidRandom();
+        echo(text, title: 'text');
+        String pass = uuidRandom();
+        String iv = uuidRandom();
+        String enc = encryptBytes(dart_convert.utf8.encode(text), pass, iv);
+        echo(enc, title: 'enc');
+        String dec = dart_convert.utf8.decode(decryptBytes(enc, pass, iv));
+        echo(dec, title: 'dec');
+        expect(dec, equals(text));
+      }
+    });
     test('installZipToTempDir()', () {
+      setCwd('~/pub/std');
       String result;
       var bytes = readFileBytes('test.zip');
       String path = installZipToTempDir(bytes, prefix: 'test-', suffix: '.zip');
