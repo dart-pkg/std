@@ -1,13 +1,8 @@
 import 'dart:io' as dart_io;
 import 'dart:async' as dart_async;
 import 'dart:convert' as dart_convert;
+import 'dart:typed_data';
 import 'package:std/misc.dart' as std_misc;
-
-// String _padBase64(String rawBase64) {
-//   return (rawBase64.length % 4 > 0)
-//       ? rawBase64 += List.filled(4 - (rawBase64.length % 4), '=').join('')
-//       : rawBase64;
-// }
 
 /// Process manager for executing command lines
 class CommandRunner {
@@ -18,7 +13,7 @@ class CommandRunner {
   CommandRunner({
     this.useUnixShell = false,
     this.unixShell = 'bash',
-    this.encoding /* = null */, //convert__.utf8,
+    this.encoding /* = null */,
   });
 
   Future<dynamic> script(
@@ -44,25 +39,49 @@ class CommandRunner {
       //print('[$workingDirectory]\n<script>\n$script</script>');
       dart_io.stderr.write('[$workingDirectory]\n<script>\n$script</script>\n');
     }
-    //String b64 = _padBase64(dart_convert.base64.encode(dart_convert.utf8.encode(script)));
-    String b64 = dart_convert.base64.encode(dart_convert.utf8.encode(script));
-    //print('b64: $b64');
-    //String command = useUnixShell ? 'echo $b64 | base64 -di | bash /dev/stdin' : 'echo $b64 | base64 -di | bash STDIN';
-    String command = 'echo $b64 | base64 -d | bash /dev/stdin';
-    for (int i = 0; i < arguments.length; i++) {
-      command += ' "${arguments[i]}"';
+    String? tmpFile;
+    String command;
+    if (useUnixShell) {
+      String b64 = dart_convert.base64.encode(dart_convert.utf8.encode(script));
+      command = 'echo $b64 | base64 -d | bash /dev/stdin';
+      for (int i = 0; i < arguments.length; i++) {
+        command += ' "${arguments[i]}"';
+      }
+    } else {
+      tmpFile = std_misc.installBinaryToTempDir(
+        Uint8List.fromList(
+          dart_io.SystemEncoding().encode(
+            dart_io.Platform.isWindows
+                ? script.replaceAll('\n', '\r\n')
+                : script,
+          ),
+        ),
+        suffix: '.cmd',
+      );
+      command = '"$tmpFile"';
+      for (int i = 0; i < arguments.length; i++) {
+        command += ' "${arguments[i]}"';
+      }
     }
     //print(command);
-    return run(
-      command,
-      encoding: encoding,
-      workingDirectory: workingDirectory,
-      environment: environment,
-      includeParentEnvironment: includeParentEnvironment,
-      silent: silent,
-      noPrompt: true,
-      returnCode: returnCode,
-    );
+    dynamic result;
+    try {
+      result = await run(
+        command,
+        encoding: encoding,
+        workingDirectory: workingDirectory,
+        environment: environment,
+        includeParentEnvironment: includeParentEnvironment,
+        silent: silent,
+        noPrompt: true,
+        returnCode: returnCode,
+      );
+    } finally {
+      if (tmpFile != null) {
+        dart_io.File(tmpFile).deleteSync();
+      }
+    }
+    return result;
   }
 
   /// Execute command and returns stdout

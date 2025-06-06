@@ -416,3 +416,14 @@
 -version: 2025.606.242
 +version: 2025.606.2308
 ```
+
+## 2025.607.333
+
+- Modified CommandRunner.script()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.606.2308
++version: 2025.607.333
+```

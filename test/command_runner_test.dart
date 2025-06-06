@@ -9,6 +9,20 @@ Future<void> main() async {
   group('Run', () {
     test('run1', () async {
       echo('run1');
+      var runner = CommandRunner(useUnixShell: false);
+      await runner.script(
+        '''
+echo on
+ls -ltr
+echo aaa
+echo %1
+echo %2''',
+        encoding: utf8,
+        arguments: ['a b', 'c d'],
+      );
+    });
+    test('run2', () async {
+      echo('run2');
       var runner = CommandRunner(useUnixShell: true);
       await runner.script(
         '''
@@ -29,15 +43,6 @@ echo \$2''',
         workingDirectory: '~/',
       );
       echo(ls, title: 'ls -l');
-      // await runner.run('ping -n 2 www.youtube.com');
-      // runner = CommandRunner(encoding: SystemEncoding());
-      // await runner.run('ping -n 2 www.youtube.com');
-      // runner = CommandRunner(encoding: utf8);
-      // //await runner.run('ping -n 2 www.youtube.com'); // error
-      // await runner.run(
-      //   'ping -n 2 www.youtube.com',
-      //   encoding: SystemEncoding(),
-      // ); // ok
     });
   });
 }
