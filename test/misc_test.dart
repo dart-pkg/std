@@ -6,6 +6,13 @@ import 'package:debug_output/debug_output.dart';
 
 void main() {
   group('Misc', () {
+    test('encryptText()', () {
+      String result;
+      String enc = encryptText('this is a text', 'passwd', 'iv');
+      echo(enc, title: 'enc');
+      String dec = decryptText(enc, 'passwd', 'iv');
+      echo(dec, title: 'dec');
+    });
     test('installZipToTempDir()', () {
       String result;
       var bytes = readFileBytes('test.zip');

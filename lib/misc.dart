@@ -2,6 +2,7 @@ import 'dart:convert' as dart_convert;
 import 'dart:io' as dart_io;
 import 'dart:typed_data';
 import 'package:archive/archive.dart' as archive_archive;
+import 'package:encrypt/encrypt.dart' as encrypt_encrypt;
 import 'package:http/http.dart' as http_http;
 import 'package:path/path.dart' as path_path;
 import 'package:crypto/crypto.dart' as crypto_crypto;
@@ -634,4 +635,23 @@ String installZipToTempDir(
     suffix: suffix,
     trial: trial + 1,
   );
+}
+
+///
+String encryptText(String plainText, String password, String ivText) {
+  password = sha512(dart_convert.utf8.encode(password)).substring(0, 32);
+  final key = encrypt_encrypt.Key.fromUtf8(password);
+  final iv = encrypt_encrypt.IV.fromUtf8(ivText);
+  final encrypter = encrypt_encrypt.Encrypter(encrypt_encrypt.AES(key));
+  final encrypted = encrypter.encrypt(plainText, iv: iv);
+  return encrypted.base64;
+}
+
+///
+String decryptText(String base64Text, String password, String ivText) {
+  password = sha512(dart_convert.utf8.encode(password)).substring(0, 32);
+  final key = encrypt_encrypt.Key.fromUtf8(password);
+  final iv = encrypt_encrypt.IV.fromUtf8(ivText);
+  final encrypter = encrypt_encrypt.Encrypter(encrypt_encrypt.AES(key));
+  return encrypter.decrypt64(base64Text, iv: iv);
 }
