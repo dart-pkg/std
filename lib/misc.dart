@@ -640,6 +640,7 @@ String installZipToTempDir(
 ///
 String encryptText(String plainText, String password, String ivText) {
   password = sha512(dart_convert.utf8.encode(password)).substring(0, 32);
+  ivText = sha512(dart_convert.utf8.encode(ivText)).substring(0, 16);
   final key = encrypt_encrypt.Key.fromUtf8(password);
   final iv = encrypt_encrypt.IV.fromUtf8(ivText);
   final encrypter = encrypt_encrypt.Encrypter(encrypt_encrypt.AES(key));
@@ -650,6 +651,7 @@ String encryptText(String plainText, String password, String ivText) {
 ///
 String decryptText(String base64Text, String password, String ivText) {
   password = sha512(dart_convert.utf8.encode(password)).substring(0, 32);
+  ivText = sha512(dart_convert.utf8.encode(ivText)).substring(0, 16);
   final key = encrypt_encrypt.Key.fromUtf8(password);
   final iv = encrypt_encrypt.IV.fromUtf8(ivText);
   final encrypter = encrypt_encrypt.Encrypter(encrypt_encrypt.AES(key));

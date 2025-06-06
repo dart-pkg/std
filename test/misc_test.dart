@@ -6,12 +6,27 @@ import 'package:debug_output/debug_output.dart';
 
 void main() {
   group('Misc', () {
-    test('encryptText()', () {
+    test('encryptText(1)', () {
       String result;
       String enc = encryptText('this is a text', 'passwd', 'iv');
-      echo(enc, title: 'enc');
+      result = echo(enc, title: 'enc');
+      expect(result, equals(r'''enc ==> `mQzqbEYZkCzHBJ+oG2vGUg==`'''));
       String dec = decryptText(enc, 'passwd', 'iv');
-      echo(dec, title: 'dec');
+      result = echo(dec, title: 'dec');
+      expect(result, equals(r'''dec ==> `this is a text`'''));
+    });
+    test('encryptText(2)', () {
+      for (int i = 0; i < 10; i++) {
+        String text = uuidRandom();
+        echo(text, title: 'text');
+        String pass = uuidRandom();
+        String iv = uuidRandom();
+        String enc = encryptText(text, pass, iv);
+        echo(enc, title: 'enc');
+        String dec = decryptText(enc, pass, iv);
+        echo(dec, title: 'dec');
+        expect(dec, equals(text));
+      }
     });
     test('installZipToTempDir()', () {
       String result;
