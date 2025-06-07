@@ -427,3 +427,14 @@
 -version: 2025.606.2308
 +version: 2025.607.333
 ```
+
+## 2025.608.657
+
+- Added: CommandRunner.runSync(), CommandRunner.runSync$(), and CommandRunner.scriptSync()
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.607.333
++version: 2025.608.657
+```

@@ -16,6 +16,7 @@ class CommandRunner {
     this.encoding /* = null */,
   });
 
+  ///
   Future<dynamic> script(
     String script, {
     List<String>? arguments,
@@ -67,6 +68,75 @@ class CommandRunner {
     dynamic result;
     try {
       result = await run(
+        command,
+        encoding: encoding,
+        workingDirectory: workingDirectory,
+        environment: environment,
+        includeParentEnvironment: includeParentEnvironment,
+        silent: silent,
+        noPrompt: true,
+        returnCode: returnCode,
+      );
+    } finally {
+      if (tmpFile != null) {
+        dart_io.File(tmpFile).deleteSync();
+      }
+    }
+    return result;
+  }
+
+  ///
+  dynamic scriptSync(
+    String script, {
+    List<String>? arguments,
+    dart_convert.Encoding? encoding,
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool silent = false,
+    bool noPrompt = false,
+    bool returnCode = false,
+  }) {
+    if (!script.endsWith('\n')) {
+      script += '\n';
+    }
+    arguments ??= [];
+    if (workingDirectory != null) {
+      workingDirectory = std_misc.pathExpand(workingDirectory);
+    }
+    workingDirectory ??= dart_io.Directory.current.absolute.path;
+    if (!noPrompt) {
+      //print('[$workingDirectory]\n<script>\n$script</script>');
+      dart_io.stderr.write('[$workingDirectory]\n<script>\n$script</script>\n');
+    }
+    String? tmpFile;
+    String command;
+    if (useUnixShell) {
+      String b64 = dart_convert.base64.encode(dart_convert.utf8.encode(script));
+      command = 'echo $b64 | base64 -d | bash /dev/stdin';
+      for (int i = 0; i < arguments.length; i++) {
+        command += ' "${arguments[i]}"';
+      }
+    } else {
+      tmpFile = std_misc.installBinaryToTempDir(
+        Uint8List.fromList(
+          dart_io.SystemEncoding().encode(
+            dart_io.Platform.isWindows
+                ? script.replaceAll('\n', '\r\n')
+                : script,
+          ),
+        ),
+        suffix: '.cmd',
+      );
+      command = '"$tmpFile"';
+      for (int i = 0; i < arguments.length; i++) {
+        command += ' "${arguments[i]}"';
+      }
+    }
+    //print(command);
+    dynamic result;
+    try {
+      result = runSync(
         command,
         encoding: encoding,
         workingDirectory: workingDirectory,
@@ -201,5 +271,87 @@ class CommandRunner {
       });
     });
     return completer.future;
+  }
+
+  /// Execute command and returns stdout
+  dynamic runSync(
+    String command, {
+    dart_convert.Encoding? encoding,
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool silent = false,
+    bool noPrompt = false,
+    bool returnCode = false,
+  }) {
+    List<String> split = std_misc.splitCommandLine(command);
+    return runSync$(
+      split,
+      encoding: encoding,
+      workingDirectory: workingDirectory,
+      environment: environment,
+      silent: silent,
+      noPrompt: noPrompt,
+      returnCode: returnCode,
+      autoQuote: false,
+    );
+  }
+
+  /// Execute command and returns stdout
+  dynamic runSync$(
+    List<String> command, {
+    dart_convert.Encoding? encoding,
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool silent = false,
+    bool noPrompt = false,
+    bool returnCode = false,
+    bool autoQuote = true,
+  }) {
+    String executable = command[0];
+    List<String> arguments = command.sublist(1).toList();
+    encoding ??= this.encoding;
+    if (workingDirectory != null) {
+      workingDirectory = std_misc.pathExpand(workingDirectory);
+    }
+    workingDirectory ??= dart_io.Directory.current.absolute.path;
+    if (autoQuote) {
+      executable = _quote(executable);
+      arguments = arguments.map((x) => _quote(x)).toList();
+    }
+    String display = std_misc.joinCommandLine([executable, ...arguments]);
+    if (useUnixShell) {
+      String command = std_misc.joinCommandLine([executable, ...arguments]);
+      executable = unixShell;
+      arguments = ['-c', command];
+    } else {
+      executable = _unquote(executable);
+      arguments = arguments.map((x) => _unquote(x)).toList();
+    }
+    if (!noPrompt) {
+      //print('[$workingDirectory] \$ $display');
+      dart_io.stderr.write('[$workingDirectory] \$ $display\n');
+    }
+    dart_io.ProcessResult result = dart_io.Process.runSync(
+      executable,
+      arguments,
+      stdoutEncoding: encoding,
+      stderrEncoding: encoding,
+      workingDirectory: workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: !useUnixShell,
+    );
+    String stdoutString = result.stdout.toString();
+    if (!silent) {
+      dart_io.stdout.write(stdoutString);
+    }
+    dart_io.stderr.write(result.stderr.toString());
+    if (returnCode) {
+      return result.exitCode;
+    } else {
+      return stdoutString;
+    }
   }
 }
