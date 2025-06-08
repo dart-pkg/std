@@ -343,11 +343,11 @@ class CommandRunner {
       includeParentEnvironment: includeParentEnvironment,
       runInShell: !useUnixShell,
     );
-    String stdoutString = result.stdout.toString();
+    String stdoutString = (result.stdout as String).trim();
     if (!silent) {
       dart_io.stdout.write(stdoutString);
     }
-    dart_io.stderr.write(result.stderr.toString());
+    dart_io.stderr.write(result.stderr as String);
     if (returnCode) {
       return result.exitCode;
     } else {

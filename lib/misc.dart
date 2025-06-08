@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart' as uuid_uuid;
 import 'package:system_info2/system_info2.dart' as sys_info;
 import 'package:intl/intl.dart' as intl_intl;
 import 'package:std/stack.dart' as std_stack;
+import 'package:std/command_runner.dart';
 
 final _cwdStack = std_stack.Stack<String>();
 
@@ -178,8 +179,14 @@ String pathExpand(String path) {
     String? varValue = getenv(varName);
     return varValue ?? match.group(0)!;
   });
-  //return path.replaceAll(r'\', '/');
-  //return pathFullName(path);
+  if (dart_io.Platform.isWindows && path.startsWith('/')) {
+    final cr = CommandRunner(useUnixShell: false, encoding: dart_convert.utf8);
+    try {
+      //print(path);
+      path = cr.runSync('cygpath -wm "$path"', noPrompt: true);
+      //print(path);
+    } catch (_) {}
+  }
   return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
 }
 

@@ -73,6 +73,14 @@ void main() {
       result = echo(exp, type: 'json');
       expect(result, equals(r'''"https://www.youtube.com/xyz/../abc"'''));
     });
+    test('pathExpand()', () {
+      String result;
+      String exp = pathExpand('/xyz');
+      result = echo(exp, type: 'json');
+      print('pathExpand() before expect');
+      expect(result, equals(r'''"C:/msys64/xyz"'''));
+      print('pathExpand() ok');
+    });
     test('pathRelative()', () {
       String result;
       String rel;
