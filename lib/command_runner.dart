@@ -343,7 +343,9 @@ class CommandRunner {
       includeParentEnvironment: includeParentEnvironment,
       runInShell: !useUnixShell,
     );
-    String stdoutString = (result.stdout as String).trim();
+    String stdoutString = (result.stdout as String);
+    stdoutString = stdoutString.trimRight();
+    stdoutString = std_misc.adjustTextNewlines(stdoutString);
     if (!silent) {
       dart_io.stdout.write(stdoutString);
     }
