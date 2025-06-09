@@ -16,7 +16,7 @@ class CommandRunner {
     this.encoding /* = null */,
   });
 
-  ///
+  /// Execute script and returns stdout
   Future<dynamic> script(
     String script, {
     List<String>? arguments,
@@ -85,7 +85,7 @@ class CommandRunner {
     return result;
   }
 
-  ///
+  /// Execute script and returns stdout
   dynamic scriptSync(
     String script, {
     List<String>? arguments,
