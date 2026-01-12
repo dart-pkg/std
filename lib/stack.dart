@@ -6,27 +6,27 @@ class Stack<T> {
 
   Stack() : _underlyingQueue = Queue<T>();
 
-  int get length => this._underlyingQueue.length;
+  int get length => _underlyingQueue.length;
 
-  bool get isEmpty => this._underlyingQueue.isEmpty;
+  bool get isEmpty => _underlyingQueue.isEmpty;
 
-  bool get isNotEmpty => this._underlyingQueue.isNotEmpty;
+  bool get isNotEmpty => _underlyingQueue.isNotEmpty;
 
-  void clear() => this._underlyingQueue.clear();
+  void clear() => _underlyingQueue.clear();
 
   T peek() {
-    if (this.isEmpty) {
+    if (isEmpty) {
       throw StateError('Cannot peek() on empty stack.');
     }
-    return this._underlyingQueue.last;
+    return _underlyingQueue.last;
   }
 
   T pop() {
-    if (this.isEmpty) {
+    if (isEmpty) {
       throw StateError('Cannot pop() on empty stack.');
     }
-    return this._underlyingQueue.removeLast();
+    return _underlyingQueue.removeLast();
   }
 
-  void push(final T element) => this._underlyingQueue.addLast(element);
+  void push(final T element) => _underlyingQueue.addLast(element);
 }

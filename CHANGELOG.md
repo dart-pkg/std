@@ -460,3 +460,24 @@
 -version: 2025.609.122
 +version: 2025.609.455
 ```
+
+## 2026.112.1529
+
+- Added findExePath\(\)
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2025.609.455
++version: 2026.112.1529
+-  test: ^1.26.2
++  test: ^1.29.0
+-  crypto: ^3.0.6
++  crypto: ^3.0.7
+-  http: ^1.4.0
++  http: ^1.6.0
+-  system_info2: ^4.0.0
+-  uuid: ^4.5.1
++  system_info2: ^4.1.0
++  uuid: ^4.5.2
+```

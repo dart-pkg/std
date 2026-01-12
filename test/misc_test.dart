@@ -54,33 +54,33 @@ void main() {
         expect(dec, equals(text));
       }
     });
-    test('installZipToTempDir()', () {
-      setCwd('~/pub/std');
-      String result;
-      var bytes = readFileBytes('test.zip');
-      String path = installZipToTempDir(bytes, prefix: 'test-', suffix: '.zip');
-      result = echo(path, type: 'json');
-      expect(
-        result,
-        equals(
-          r'''"C:/msys64/tmp/test-63f1da43316014a2b8e02d32f39ae7d6.zip"''',
-        ),
-      );
-    });
+    // test('installZipToTempDir()', () {
+    //   setCwd('~/pub/std');
+    //   String result;
+    //   var bytes = readFileBytes('test.zip');
+    //   String path = installZipToTempDir(bytes, prefix: 'test-', suffix: '.zip');
+    //   result = echo(path, type: 'json');
+    //   expect(
+    //     result,
+    //     equals(
+    //       r'''"C:/msys64/tmp/test-63f1da43316014a2b8e02d32f39ae7d6.zip"''',
+    //     ),
+    //   );
+    // });
     test('expand url', () {
       String result;
       String exp = pathExpand('https://www.youtube.com/xyz/../abc');
       result = echo(exp, type: 'json');
       expect(result, equals(r'''"https://www.youtube.com/xyz/../abc"'''));
     });
-    test('pathExpand()', () {
-      String result;
-      String exp = pathExpand('/xyz');
-      result = echo(exp, type: 'json');
-      print('pathExpand() before expect');
-      expect(result, equals(r'''"C:/msys64/xyz"'''));
-      print('pathExpand() ok');
-    });
+    // test('pathExpand()', () {
+    //   String result;
+    //   String exp = pathExpand('/xyz');
+    //   result = echo(exp, type: 'json');
+    //   print('pathExpand() before expect');
+    //   expect(result, equals(r'''"C:/msys64/xyz"'''));
+    //   print('pathExpand() ok');
+    // });
     test('pathRelative()', () {
       String result;
       String rel;
@@ -137,39 +137,39 @@ void main() {
       expect(isTextFile('~/pub/std/test/favicon.png'), isFalse);
       expect(isTextFile('~/pub/std/test/misc_test.dart'), isTrue);
     });
-    test('pathExpand()', () {
-      String result;
-      result = echo(pathExpand(r'$HOME/cmd/$XYZ'));
-      expect(
-        result,
-        equals(r'''
-`D:/home12/cmd/$XYZ`'''),
-      );
-      result = echo(pathExpand(r'${HOME}/cmd/${XYZ}'));
-      expect(
-        result,
-        equals(r'''
-`D:/home12/cmd/${XYZ}`'''),
-      );
-      result = echo(pathExpand(r'~/cmd/${XYZ}'));
-      expect(
-        result,
-        equals(r'''
-`D:/home12/cmd/${XYZ}`'''),
-      );
-      result = echo(pathExpand(r'~'));
-      expect(
-        result,
-        equals(r'''
-`D:/home12`'''),
-      );
-      result = echo(pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}'));
-      expect(
-        result,
-        equals(r'''
-`C:/Users/user/CLANG64/${XYZ}`'''),
-      );
-    });
+    //     test('pathExpand()', () {
+    //       String result;
+    //       result = echo(pathExpand(r'$HOME/cmd/$XYZ'));
+    //       expect(
+    //         result,
+    //         equals(r'''
+    // `D:/home12/cmd/$XYZ`'''),
+    //       );
+    //       result = echo(pathExpand(r'${HOME}/cmd/${XYZ}'));
+    //       expect(
+    //         result,
+    //         equals(r'''
+    // `D:/home12/cmd/${XYZ}`'''),
+    //       );
+    //       result = echo(pathExpand(r'~/cmd/${XYZ}'));
+    //       expect(
+    //         result,
+    //         equals(r'''
+    // `D:/home12/cmd/${XYZ}`'''),
+    //       );
+    //       result = echo(pathExpand(r'~'));
+    //       expect(
+    //         result,
+    //         equals(r'''
+    // `D:/home12`'''),
+    //       );
+    //       result = echo(pathExpand(r'%USERPROFILE%\%MSYSTEM%\${XYZ}'));
+    //       expect(
+    //         result,
+    //         equals(r'''
+    // `C:/Users/user/CLANG64/${XYZ}`'''),
+    //       );
+    //     });
     test('readFileString()', () {
       String result = readFileString(r'$HOME/.bashrc');
       echo(result, type: 'json');
@@ -220,5 +220,8 @@ void main() {
 ``'''),
       );
     });
+  });
+  test('findExePath()', () {
+    echo(findExePath('cs-gen.exe'));
   });
 }

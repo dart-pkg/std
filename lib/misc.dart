@@ -12,6 +12,8 @@ import 'package:intl/intl.dart' as intl_intl;
 import 'package:std/stack.dart' as std_stack;
 import 'package:std/command_runner.dart';
 
+//import 'package:debug_output/debug_output.dart';
+
 final _cwdStack = std_stack.Stack<String>();
 
 /// Makes a command line string from List of String (arg list).
@@ -689,4 +691,29 @@ Uint8List decryptBytes(String base64Text, String keyText, String ivText) {
       iv: iv,
     ),
   );
+}
+
+/// Windows only: find exe from PAT}H variable (current working directory first, if specified).
+String? findExePath(String exe, {String cwd = ''}) {
+  if (exe.contains(':')) // exe is rooted
+  {
+    if (!fileExists(exe)) return null;
+    return pathFullName(exe);
+  }
+  var path = getenv('PATH') ?? '';
+  path = '$cwd;$path';
+  var pathSplit = path.split(';');
+  for (int i = 0; i < pathSplit.length; i++) {
+    String elem = pathSplit[i];
+    elem = elem.trim();
+    if (elem.isNotEmpty && fileExists(path_path.join(elem, exe))) {
+      return pathFullName(path_path.join(elem, exe));
+    }
+    String baseName = pathBaseName(exe);
+    if (elem.isNotEmpty &&
+        fileExists(path_path.join(elem, '$baseName.bin', exe))) {
+      return pathFullName(path_path.join(elem, '$baseName.bin', exe));
+    }
+  }
+  return null;
 }
