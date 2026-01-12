@@ -189,7 +189,8 @@ String pathExpand(String path) {
       //print(path);
     } catch (_) {}
   }
-  return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
+  //return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
+  return path.replaceAll(r'\', '/');
 }
 
 String pathRelative(String path, {String? from}) {
@@ -236,8 +237,8 @@ void popd() {
 
 /// Returns full path of a path
 String pathFullName(String path) {
-  return pathExpand(path);
-  //return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
+  path = pathExpand(path);
+  return path_path.normalize(path_path.absolute(path)).replaceAll(r'\', '/');
 }
 
 /// Returns directory part of a path
@@ -695,6 +696,7 @@ Uint8List decryptBytes(String base64Text, String keyText, String ivText) {
 
 /// Windows only: find exe from PAT}H variable (current working directory first, if specified).
 String? findExePath(String exe, {String cwd = ''}) {
+  exe = pathExpand(exe);
   if (exe.contains(':')) // exe is rooted
   {
     if (!fileExists(exe)) return null;
@@ -706,6 +708,7 @@ String? findExePath(String exe, {String cwd = ''}) {
   for (int i = 0; i < pathSplit.length; i++) {
     String elem = pathSplit[i];
     elem = elem.trim();
+    elem = pathExpand(elem);
     if (elem.isNotEmpty && fileExists(path_path.join(elem, exe))) {
       return pathFullName(path_path.join(elem, exe));
     }

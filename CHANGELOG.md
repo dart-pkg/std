@@ -481,3 +481,14 @@
 +  system_info2: ^4.1.0
 +  uuid: ^4.5.2
 ```
+
+## 2026.112.1609
+
+- Modified so that findExePath\(\) works correctory
+
+```
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+-version: 2026.112.1529
++version: 2026.112.1609
+```

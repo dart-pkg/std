@@ -223,5 +223,7 @@ void main() {
   });
   test('findExePath()', () {
     echo(findExePath('cs-gen.exe'));
+    echo(findExePath('\$JAVA_HOME/bin/javac.exe'));
+    echo(findExePath('\$JAVA_HOME/bin/xyz.exe'));
   });
 }
